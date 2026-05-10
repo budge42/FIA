@@ -12,7 +12,17 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { content } = req.body;
+    const { content } = req.body || {};
+
+    if (!content || typeof content !== "string") {
+      return res.status(400).json({ error: "Missing broker statement content." });
+    }
+
+    if (!process.env.OPENAI_API_KEY) {
+      return res.status(500).json({
+        error: "OPENAI_API_KEY is missing in Vercel Environment Variables."
+      });
+    }
 
     const response = await fetch("https://api.openai.com/v1/responses", {
       method: "POST",
@@ -21,15 +31,50 @@ export default async function handler(req, res) {
         "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`
       },
       body: JSON.stringify({
-        model: "gpt-5.5",
+        model: "gpt-5",
         input: [
           {
             role: "system",
-            content: "You are FIA, a New Zealand FIF tax workpaper assistant. Produce a professional accountant-style draft report. Do not invent numbers. Flag uncertain items for accountant review."
+            content: `
+You are FIA, the Foreign Investment Assistant.
+
+You help prepare New Zealand FIF / overseas investment tax workpapers.
+
+You are not giving final tax advice. You are producing an accountant-review draft.
+
+Rules:
+- Do not invent missing numbers.
+- Separate facts, assumptions, and review items.
+- Be conservative.
+- Flag uncertain items for accountant review.
+- Produce a professional Big 4-style report.
+- If calculations cannot be completed, explain exactly what data is missing.
+            `
           },
           {
             role: "user",
-            content
+            content: `
+Analyse this broker / investment statement and produce a FIA draft report.
+
+Required report sections:
+
+1. Executive Summary
+2. Data Reviewed
+3. Investments Identified
+4. Likely FIF Investments
+5. Likely Exempt / Non-FIF Investments
+6. Australian Exemption Issues
+7. Dividends, Distributions and Foreign Tax
+8. Reconciliation Issues
+9. Missing Information / Client Questions
+10. Draft FIF Calculation Notes
+11. Accountant Review Notes
+12. Disclaimer
+
+Broker data:
+
+${content}
+            `
           }
         ]
       })
@@ -38,14 +83,21 @@ export default async function handler(req, res) {
     const data = await response.json();
 
     if (!response.ok) {
-      return res.status(response.status).json(data);
+      return res.status(response.status).json({
+        error: data.error?.message || JSON.stringify(data, null, 2)
+      });
     }
 
     return res.status(200).json({
-      output_text: data.output_text || JSON.stringify(data, null, 2)
+      output_text:
+        data.output_text ||
+        data.output?.[0]?.content?.[0]?.text ||
+        JSON.stringify(data, null, 2)
     });
 
   } catch (error) {
-    return res.status(500).json({ error: error.message });
+    return res.status(500).json({
+      error: error.message || "Unknown server error."
+    });
   }
 }
