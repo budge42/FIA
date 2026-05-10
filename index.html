@@ -3,459 +3,660 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <title>FIA — Foreign Investment Assistant</title>
+
   <style>
     :root {
-      --bg: #05070a;
-      --card: #10151d;
-      --card2: #151b25;
-      --text: #f4f7fb;
-      --muted: #9aa7b5;
-      --line: #253142;
-      --green: #4ade80;
-      --blue: #60a5fa;
-      --gold: #fbbf24;
-      --red: #fb7185;
-      --purple: #a78bfa;
+      --navy: #00205b;
+      --navy-dark: #00143a;
+      --blue: #005eb8;
+      --white: #ffffff;
+      --offwhite: #f5f8fc;
+      --text: #07172f;
+      --muted: #5e6b7c;
+      --line: #d9e2ef;
+      --success: #0f8a5f;
+      --warning: #b7791f;
+      --danger: #b42318;
+      --shadow: 0 22px 60px rgba(0, 32, 91, 0.12);
     }
 
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
 
     body {
       margin: 0;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background:
-        radial-gradient(circle at top, #132033 0%, transparent 35%),
-        linear-gradient(180deg, #05070a, #080b10);
+      background: linear-gradient(180deg, var(--offwhite), #ffffff);
       color: var(--text);
     }
 
     header {
-      padding: 64px 24px 36px;
+      background:
+        radial-gradient(circle at top right, rgba(0, 94, 184, 0.35), transparent 35%),
+        linear-gradient(135deg, var(--navy), var(--navy-dark));
+      color: white;
+      padding: 56px 22px 64px;
       text-align: center;
-      border-bottom: 1px solid var(--line);
     }
 
     .badge {
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
       padding: 8px 14px;
-      border: 1px solid var(--line);
+      border: 1px solid rgba(255,255,255,0.25);
       border-radius: 999px;
-      color: var(--green);
-      background: rgba(74, 222, 128, 0.08);
+      background: rgba(255,255,255,0.08);
       font-size: 14px;
-      margin-bottom: 18px;
+      margin-bottom: 20px;
     }
 
     h1 {
-      font-size: clamp(42px, 8vw, 86px);
       margin: 0;
+      font-size: clamp(42px, 7vw, 76px);
       letter-spacing: -0.06em;
+      line-height: 0.95;
     }
 
     .subtitle {
-      max-width: 760px;
-      margin: 20px auto 0;
-      color: var(--muted);
-      font-size: 20px;
-      line-height: 1.5;
+      max-width: 720px;
+      margin: 22px auto 0;
+      font-size: 19px;
+      line-height: 1.55;
+      color: rgba(255,255,255,0.82);
     }
 
     main {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 42px 20px 80px;
+      max-width: 1100px;
+      margin: -42px auto 80px;
+      padding: 0 20px;
     }
 
-    .section-title {
-      font-size: 28px;
-      margin: 54px 0 18px;
+    .panel {
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .upload-zone {
+      padding: 34px;
+      text-align: center;
+      border-bottom: 1px solid var(--line);
+      background: linear-gradient(180deg, #ffffff, #f8fbff);
+    }
+
+    .upload-box {
+      border: 2px dashed #a9bdd8;
+      border-radius: 24px;
+      padding: 38px 24px;
+      background: white;
+      transition: 0.2s;
+      cursor: pointer;
+    }
+
+    .upload-box:hover,
+    .upload-box.dragover {
+      border-color: var(--blue);
+      background: #f2f7ff;
+      transform: translateY(-1px);
+    }
+
+    .upload-icon {
+      width: 72px;
+      height: 72px;
+      border-radius: 22px;
+      background: var(--navy);
+      color: white;
+      display: grid;
+      place-items: center;
+      margin: 0 auto 18px;
+      font-size: 34px;
+      font-weight: 800;
+    }
+
+    .upload-title {
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 8px;
+    }
+
+    .upload-subtitle {
+      color: var(--muted);
+      max-width: 620px;
+      margin: 0 auto 18px;
+      line-height: 1.5;
+    }
+
+    input[type="file"] {
+      display: none;
+    }
+
+    button {
+      border: none;
+      outline: none;
+      cursor: pointer;
+      border-radius: 14px;
+      padding: 14px 20px;
+      font-size: 15px;
+      font-weight: 800;
+      background: var(--navy);
+      color: white;
+      transition: 0.2s;
+    }
+
+    button:hover {
+      background: var(--blue);
+      transform: translateY(-1px);
+    }
+
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .secondary-button {
+      background: #eef3fa;
+      color: var(--navy);
+    }
+
+    .secondary-button:hover {
+      background: #dfeaf7;
+    }
+
+    .content {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 0;
+    }
+
+    .left,
+    .right {
+      padding: 28px;
+    }
+
+    .left {
+      border-right: 1px solid var(--line);
+      background: #fbfdff;
+    }
+
+    h2 {
+      margin: 0 0 14px;
+      font-size: 22px;
       letter-spacing: -0.03em;
     }
 
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 18px;
-    }
-
-    .card {
-      background: linear-gradient(180deg, var(--card), var(--card2));
-      border: 1px solid var(--line);
-      border-radius: 22px;
-      padding: 22px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.25);
-    }
-
-    .card h3 {
-      margin: 0 0 10px;
-      font-size: 19px;
-    }
-
-    .card p, .card li {
+    .small {
+      font-size: 13px;
       color: var(--muted);
-      line-height: 1.55;
+      line-height: 1.45;
+    }
+
+    .file-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .file-item {
+      border: 1px solid var(--line);
+      background: white;
+      border-radius: 16px;
+      padding: 14px;
+    }
+
+    .file-name {
+      font-weight: 750;
+      margin-bottom: 4px;
+      word-break: break-word;
+    }
+
+    .file-meta {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 220px;
+      resize: vertical;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 14px;
+      font-size: 14px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      color: var(--text);
+      outline: none;
+      background: white;
+      line-height: 1.5;
+    }
+
+    textarea:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 4px rgba(0, 94, 184, 0.08);
+    }
+
+    .actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 16px;
+      flex-wrap: wrap;
+    }
+
+    .status {
+      margin-top: 14px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: #eef3fa;
+      color: var(--navy);
+      font-size: 14px;
+      display: none;
+    }
+
+    .status.show {
+      display: block;
+    }
+
+    .output {
+      min-height: 420px;
+      white-space: pre-wrap;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: #ffffff;
+      padding: 20px;
+      line-height: 1.65;
+      color: #14233a;
       font-size: 15px;
     }
 
-    ul {
-      padding-left: 18px;
-      margin-bottom: 0;
-    }
-
-    .flow {
-      display: grid;
-      gap: 14px;
-    }
-
-    .step {
-      display: grid;
-      grid-template-columns: 42px 1fr;
-      gap: 14px;
-      align-items: start;
-      background: rgba(255,255,255,0.035);
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      padding: 18px;
-    }
-
-    .num {
-      width: 42px;
-      height: 42px;
-      border-radius: 50%;
-      display: grid;
-      place-items: center;
-      font-weight: 800;
-      background: rgba(96,165,250,0.15);
-      color: var(--blue);
-      border: 1px solid rgba(96,165,250,0.35);
-    }
-
-    .tag {
-      display: inline-block;
-      margin: 4px 6px 4px 0;
-      padding: 6px 10px;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.06);
+    .output.empty {
       color: var(--muted);
-      font-size: 13px;
+    }
+
+    .pill-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+    }
+
+    .pill {
       border: 1px solid var(--line);
+      background: white;
+      color: var(--muted);
+      padding: 7px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
     }
 
-    .highlight {
-      border-color: rgba(74,222,128,0.35);
-      background: linear-gradient(180deg, rgba(74,222,128,0.08), rgba(255,255,255,0.03));
+    .mini-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 18px;
     }
 
-    .warning {
-      border-color: rgba(251,191,36,0.35);
-      background: linear-gradient(180deg, rgba(251,191,36,0.08), rgba(255,255,255,0.03));
+    .metric {
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 14px;
     }
 
-    .danger {
-      border-color: rgba(251,113,133,0.35);
-      background: linear-gradient(180deg, rgba(251,113,133,0.08), rgba(255,255,255,0.03));
+    .metric strong {
+      display: block;
+      color: var(--navy);
+      font-size: 18px;
+      margin-bottom: 2px;
+    }
+
+    .metric span {
+      color: var(--muted);
+      font-size: 12px;
     }
 
     footer {
       text-align: center;
       color: var(--muted);
-      border-top: 1px solid var(--line);
       padding: 32px 20px;
+      border-top: 1px solid var(--line);
+      background: white;
     }
 
-    code {
-      background: rgba(255,255,255,0.08);
-      padding: 2px 6px;
-      border-radius: 6px;
-      color: #dbeafe;
+    @media (max-width: 850px) {
+      .content {
+        grid-template-columns: 1fr;
+      }
+
+      .left {
+        border-right: none;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .mini-grid {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
 
 <body>
   <header>
-    <div class="badge">FIA — Foreign Investment Assistant</div>
-    <h1>Upload broker files.<br />Generate FIF workpapers.</h1>
+    <div class="badge">FIA · Foreign Investment Assistant</div>
+    <h1>Upload files.<br />Generate FIF reports.</h1>
     <p class="subtitle">
-      FIA helps accountants and investors analyse overseas investment files, classify FIF exposure,
-      reconcile transactions, calculate income, and produce a review-ready tax report.
+      A clean AI workpaper assistant for New Zealand overseas investment tax.
+      Upload broker files, extract investment data, classify likely FIF exposure,
+      and generate a review-ready draft report.
     </p>
   </header>
 
   <main>
-    <h2 class="section-title">What FIA Does</h2>
-    <div class="grid">
-      <div class="card highlight">
-        <h3>1. File Upload</h3>
-        <p>Upload CSVs, PDFs, broker statements, dividend reports, transaction exports and prior-year workpapers.</p>
-      </div>
-      <div class="card">
-        <h3>2. Data Extraction</h3>
-        <p>Extract holdings, buys, sells, dividends, fees, FX rates, withholding tax and closing balances.</p>
-      </div>
-      <div class="card">
-        <h3>3. Asset Classification</h3>
-        <p>Classify each investment as FIF, exempt, PIE, crypto, foreign pension, Australian exemption or manual review.</p>
-      </div>
-      <div class="card">
-        <h3>4. Reconciliation</h3>
-        <p>Check opening holdings + transactions against closing holdings and flag missing or inconsistent data.</p>
-      </div>
-      <div class="card">
-        <h3>5. FIF Calculation</h3>
-        <p>Calculate FDR, CV, de minimis threshold, foreign tax credits and estimated tax payable.</p>
-      </div>
-      <div class="card highlight">
-        <h3>6. Report Generation</h3>
-        <p>Produce a clean accountant-ready report with assumptions, exceptions, calculation tables and sign-off notes.</p>
-      </div>
-    </div>
-
-    <h2 class="section-title">Workflow Map</h2>
-    <div class="flow">
-      <div class="step">
-        <div class="num">1</div>
-        <div>
-          <h3>Upload Source Files</h3>
-          <p>
-            User uploads broker exports from Hatch, Sharesies, Interactive Brokers, Tiger Brokers,
-            Stake or custodian platforms.
+    <section class="panel">
+      <div class="upload-zone">
+        <label class="upload-box" id="uploadBox" for="fileInput">
+          <div class="upload-icon">↑</div>
+          <div class="upload-title">Upload broker files</div>
+          <p class="upload-subtitle">
+            Add CSV, TXT, JSON or statement exports. For GitHub Pages testing, PDFs are not parsed unless your backend handles them.
           </p>
-          <span class="tag">CSV</span>
-          <span class="tag">PDF</span>
-          <span class="tag">XLSX</span>
-          <span class="tag">Statements</span>
+          <button type="button" onclick="document.getElementById('fileInput').click()">Choose files</button>
+          <input id="fileInput" type="file" multiple accept=".csv,.txt,.json,.md,.html,.xml,.xlsx,.pdf" />
+        </label>
+
+        <div class="pill-row">
+          <span class="pill">Hatch</span>
+          <span class="pill">Sharesies</span>
+          <span class="pill">IBKR</span>
+          <span class="pill">Tiger Brokers</span>
+          <span class="pill">Stake</span>
+          <span class="pill">Custodian reports</span>
         </div>
       </div>
 
-      <div class="step">
-        <div class="num">2</div>
-        <div>
-          <h3>Normalize Broker Data</h3>
-          <p>
-            FIA converts different broker formats into one clean transaction schema.
+      <div class="content">
+        <div class="left">
+          <h2>Source files</h2>
+          <p class="small">
+            FIA will send the extracted text to your backend. Your backend should attach the OpenAI API key securely and call the OpenAI API.
           </p>
-          <span class="tag">Buys</span>
-          <span class="tag">Sells</span>
-          <span class="tag">Dividends</span>
-          <span class="tag">Fees</span>
-          <span class="tag">FX</span>
+
+          <div class="file-list" id="fileList">
+            <div class="file-item">
+              <div class="file-name">No files uploaded yet</div>
+              <div class="file-meta">Choose one or more files to begin.</div>
+            </div>
+          </div>
+
+          <div class="mini-grid">
+            <div class="metric">
+              <strong id="fileCount">0</strong>
+              <span>Files</span>
+            </div>
+            <div class="metric">
+              <strong id="charCount">0</strong>
+              <span>Characters</span>
+            </div>
+            <div class="metric">
+              <strong>GPT-5.5</strong>
+              <span>Model</span>
+            </div>
+          </div>
+
+          <div style="margin-top: 22px;">
+            <h2>Extracted text</h2>
+            <textarea id="extractedText" placeholder="Extracted file text will appear here. You can also paste broker data manually."></textarea>
+          </div>
+
+          <div class="actions">
+            <button id="analyseButton" onclick="analyseFiles()">Generate FIA report</button>
+            <button class="secondary-button" onclick="clearAll()">Clear</button>
+          </div>
+
+          <div class="status" id="statusBox">Ready.</div>
+        </div>
+
+        <div class="right">
+          <h2>AI output</h2>
+          <div class="output empty" id="output">
+No report generated yet.
+
+The report will include:
+• portfolio summary
+• likely FIF investments
+• likely exempt investments
+• missing data
+• reconciliation issues
+• FDR / CV calculation guidance
+• accountant review notes
+          </div>
         </div>
       </div>
-
-      <div class="step">
-        <div class="num">3</div>
-        <div>
-          <h3>Classify Investments</h3>
-          <p>
-            The system determines whether each asset is FIF-applicable, exempt, uncertain or outside FIF rules.
-          </p>
-          <span class="tag">US shares</span>
-          <span class="tag">ETFs</span>
-          <span class="tag">ASX shares</span>
-          <span class="tag">PIE funds</span>
-          <span class="tag">Crypto</span>
-        </div>
-      </div>
-
-      <div class="step">
-        <div class="num">4</div>
-        <div>
-          <h3>Run Reconciliation</h3>
-          <p>
-            FIA checks whether opening holdings plus purchases minus sales matches the closing portfolio.
-          </p>
-          <span class="tag">Opening balance</span>
-          <span class="tag">Closing balance</span>
-          <span class="tag">Missing trades</span>
-          <span class="tag">Corporate actions</span>
-        </div>
-      </div>
-
-      <div class="step">
-        <div class="num">5</div>
-        <div>
-          <h3>Calculate FIF Income</h3>
-          <p>
-            FIA calculates FDR and CV where available, then shows the lower result and explains the calculation.
-          </p>
-          <span class="tag">FDR: 5% opening value</span>
-          <span class="tag">CV: actual movement</span>
-          <span class="tag">Foreign tax credits</span>
-        </div>
-      </div>
-
-      <div class="step">
-        <div class="num">6</div>
-        <div>
-          <h3>Flag Exceptions</h3>
-          <p>
-            Anything uncertain is separated for accountant review instead of being hidden inside the final number.
-          </p>
-          <span class="tag">Unclassified ETF</span>
-          <span class="tag">Missing FX</span>
-          <span class="tag">ASX exemption check</span>
-          <span class="tag">Stock split</span>
-        </div>
-      </div>
-
-      <div class="step">
-        <div class="num">7</div>
-        <div>
-          <h3>Generate Report</h3>
-          <p>
-            FIA produces a draft workpaper, client summary, assumptions list, exception log and IR3-ready figures.
-          </p>
-          <span class="tag">PDF report</span>
-          <span class="tag">Excel workpaper</span>
-          <span class="tag">Accountant sign-off</span>
-        </div>
-      </div>
-    </div>
-
-    <h2 class="section-title">Required Inputs</h2>
-    <div class="grid">
-      <div class="card">
-        <h3>Client Details</h3>
-        <ul>
-          <li>Tax year</li>
-          <li>Investor type</li>
-          <li>NZ tax residency</li>
-          <li>Marginal tax rate</li>
-          <li>Transitional resident status</li>
-        </ul>
-      </div>
-
-      <div class="card">
-        <h3>Portfolio Data</h3>
-        <ul>
-          <li>Ticker / ISIN</li>
-          <li>Exchange</li>
-          <li>Country</li>
-          <li>Currency</li>
-          <li>Opening and closing units</li>
-        </ul>
-      </div>
-
-      <div class="card">
-        <h3>Transaction Data</h3>
-        <ul>
-          <li>Buy and sell dates</li>
-          <li>Quantity</li>
-          <li>Price</li>
-          <li>Brokerage fees</li>
-          <li>FX rate to NZD</li>
-        </ul>
-      </div>
-
-      <div class="card">
-        <h3>Income Data</h3>
-        <ul>
-          <li>Dividends</li>
-          <li>Distributions</li>
-          <li>Foreign withholding tax</li>
-          <li>Dividend reinvestment</li>
-          <li>Payment currency</li>
-        </ul>
-      </div>
-    </div>
-
-    <h2 class="section-title">Calculation Engine</h2>
-    <div class="grid">
-      <div class="card highlight">
-        <h3>De Minimis Test</h3>
-        <p>
-          Checks whether total FIF investment cost is under the NZ$50,000 threshold for eligible individuals.
-        </p>
-        <p><code>Total FIF cost ≤ NZ$50,000</code></p>
-      </div>
-
-      <div class="card">
-        <h3>FDR Method</h3>
-        <p>
-          Calculates FIF income as 5% of opening market value, plus any quick sale adjustment where required.
-        </p>
-        <p><code>FIF income = 5% × opening value</code></p>
-      </div>
-
-      <div class="card">
-        <h3>CV Method</h3>
-        <p>
-          Calculates actual portfolio movement using closing value, sales, dividends, purchases and opening value.
-        </p>
-        <p><code>CV = closing + sales + dividends - purchases - opening</code></p>
-      </div>
-
-      <div class="card">
-        <h3>Tax Estimate</h3>
-        <p>
-          Applies the user's marginal tax rate and foreign tax credits to estimate tax payable.
-        </p>
-        <p><code>Tax = FIF income × tax rate - credits</code></p>
-      </div>
-    </div>
-
-    <h2 class="section-title">Exception Handling</h2>
-    <div class="grid">
-      <div class="card warning">
-        <h3>Manual Review Items</h3>
-        <ul>
-          <li>Australian ETF exemption uncertainty</li>
-          <li>Stapled securities</li>
-          <li>Foreign pensions</li>
-          <li>Employee share schemes</li>
-          <li>Corporate restructures</li>
-        </ul>
-      </div>
-
-      <div class="card danger">
-        <h3>High-Risk Data Issues</h3>
-        <ul>
-          <li>Missing March statement</li>
-          <li>Opening and closing mismatch</li>
-          <li>Missing FX rate</li>
-          <li>Unmatched dividend reinvestment</li>
-          <li>Unknown security type</li>
-        </ul>
-      </div>
-
-      <div class="card">
-        <h3>Human Sign-Off</h3>
-        <p>
-          FIA should not replace the accountant. It prepares the workpapers, highlights risk,
-          and gives the accountant a clean review pack.
-        </p>
-      </div>
-    </div>
-
-    <h2 class="section-title">MVP Scope</h2>
-    <div class="card highlight">
-      <h3>Version 1</h3>
-      <p>
-        Start narrow: NZ individuals, US-listed shares and ETFs, Hatch/Sharesies/IBKR CSV upload,
-        FDR and CV calculations, foreign tax credits, and PDF report export.
-      </p>
-      <p>
-        Avoid pensions, trusts, companies, complex ASX exemptions, RSUs and corporate actions until later.
-      </p>
-    </div>
-
-    <h2 class="section-title">Positioning</h2>
-    <div class="card">
-      <h3>Best Product Message</h3>
-      <p>
-        <strong>FIA turns messy overseas investment files into clean FIF workpapers.</strong>
-      </p>
-      <p>
-        Upload broker files. Reconcile holdings. Classify investments. Calculate FIF income.
-        Generate an accountant-ready report.
-      </p>
-    </div>
+    </section>
   </main>
 
   <footer>
-    FIA — Foreign Investment Assistant · Draft product map
+    FIA — Foreign Investment Assistant · Draft AI workpaper tool
   </footer>
+
+  <script>
+    const BACKEND_ENDPOINT = "/api/analyse";
+
+    const SYSTEM_PROMPT = `
+You are FIA, a Foreign Investment Assistant for New Zealand overseas investment tax workpapers.
+
+You are not giving final tax advice. You are preparing a draft accountant-review workpaper.
+
+Analyse the uploaded broker or portfolio data and produce a professional report.
+
+Output sections:
+1. Executive summary
+2. Files/data reviewed
+3. Investments identified
+4. Likely FIF investments
+5. Likely exempt or non-FIF investments
+6. Australian exemption issues
+7. Dividends, distributions and foreign withholding tax
+8. Reconciliation checks
+9. Missing information / client questions
+10. Draft FIF calculation approach
+11. Accountant review notes
+12. Clear disclaimer
+
+Important rules:
+- Be conservative.
+- Do not invent numbers.
+- If information is missing, say exactly what is missing.
+- Separate "identified facts" from "assumptions".
+- Flag anything uncertain for manual review.
+- Keep the tone professional, concise and Big 4 style.
+`;
+
+    const fileInput = document.getElementById("fileInput");
+    const fileList = document.getElementById("fileList");
+    const extractedText = document.getElementById("extractedText");
+    const output = document.getElementById("output");
+    const statusBox = document.getElementById("statusBox");
+    const uploadBox = document.getElementById("uploadBox");
+    const fileCount = document.getElementById("fileCount");
+    const charCount = document.getElementById("charCount");
+    const analyseButton = document.getElementById("analyseButton");
+
+    let uploadedFiles = [];
+
+    fileInput.addEventListener("change", async (event) => {
+      await handleFiles(Array.from(event.target.files || []));
+    });
+
+    uploadBox.addEventListener("dragover", (event) => {
+      event.preventDefault();
+      uploadBox.classList.add("dragover");
+    });
+
+    uploadBox.addEventListener("dragleave", () => {
+      uploadBox.classList.remove("dragover");
+    });
+
+    uploadBox.addEventListener("drop", async (event) => {
+      event.preventDefault();
+      uploadBox.classList.remove("dragover");
+      await handleFiles(Array.from(event.dataTransfer.files || []));
+    });
+
+    extractedText.addEventListener("input", updateStats);
+
+    async function handleFiles(files) {
+      if (!files.length) return;
+
+      setStatus("Reading files...");
+
+      uploadedFiles = files;
+      fileList.innerHTML = "";
+      let combinedText = "";
+
+      for (const file of files) {
+        const fileItem = document.createElement("div");
+        fileItem.className = "file-item";
+        fileItem.innerHTML = `
+          <div class="file-name">${escapeHtml(file.name)}</div>
+          <div class="file-meta">${formatBytes(file.size)} · ${escapeHtml(file.type || "unknown type")}</div>
+        `;
+        fileList.appendChild(fileItem);
+
+        let text = "";
+
+        try {
+          if (file.type === "application/pdf" || file.name.toLowerCase().endsWith(".pdf")) {
+            text = `[PDF uploaded: ${file.name}. Browser-side PDF parsing is not enabled in this static demo. Send the raw file to backend for extraction, or upload a CSV/TXT export.]`;
+          } else if (file.name.toLowerCase().endsWith(".xlsx")) {
+            text = `[XLSX uploaded: ${file.name}. Browser-side spreadsheet parsing is not enabled in this static demo. Send the raw file to backend for extraction, or export as CSV.]`;
+          } else {
+            text = await file.text();
+          }
+        } catch (error) {
+          text = `[Could not read ${file.name}: ${error.message}]`;
+        }
+
+        combinedText += `\n\n--- FILE: ${file.name} ---\n${text}`;
+      }
+
+      extractedText.value = combinedText.trim();
+      updateStats();
+      setStatus("Files loaded. Ready to generate report.");
+    }
+
+    async function analyseFiles() {
+      const content = extractedText.value.trim();
+
+      if (!content) {
+        alert("Please upload files or paste broker data first.");
+        return;
+      }
+
+      analyseButton.disabled = true;
+      output.classList.remove("empty");
+      output.textContent = "";
+      setStatus("FIA is analysing the uploaded data...");
+
+      try {
+        const response = await fetch(BACKEND_ENDPOINT, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            model: "gpt-5.5",
+            reasoning: { effort: "medium" },
+            input: [
+              {
+                role: "system",
+                content: SYSTEM_PROMPT
+              },
+              {
+                role: "user",
+                content: "Analyse this uploaded investment data and produce the FIA report:\n\n" + content
+              }
+            ]
+          })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error || data.message || "Backend request failed.");
+        }
+
+        const text =
+          data.output_text ||
+          data.report ||
+          data.choices?.[0]?.message?.content ||
+          data.output?.[0]?.content?.[0]?.text ||
+          JSON.stringify(data, null, 2);
+
+        output.textContent = text;
+        setStatus("Report generated.");
+
+      } catch (error) {
+        output.textContent =
+          "Error generating report:\n\n" +
+          error.message +
+          "\n\nCheck that your backend endpoint exists at " +
+          BACKEND_ENDPOINT +
+          " and that your OpenAI API key is stored server-side.";
+        setStatus("Error. Backend/API connection failed.");
+      } finally {
+        analyseButton.disabled = false;
+      }
+    }
+
+    function clearAll() {
+      uploadedFiles = [];
+      fileInput.value = "";
+      extractedText.value = "";
+      output.classList.add("empty");
+      output.textContent = "No report generated yet.";
+      fileList.innerHTML = `
+        <div class="file-item">
+          <div class="file-name">No files uploaded yet</div>
+          <div class="file-meta">Choose one or more files to begin.</div>
+        </div>
+      `;
+      updateStats();
+      setStatus("Cleared.");
+    }
+
+    function updateStats() {
+      fileCount.textContent = uploadedFiles.length;
+      charCount.textContent = extractedText.value.length.toLocaleString();
+    }
+
+    function setStatus(message) {
+      statusBox.textContent = message;
+      statusBox.classList.add("show");
+    }
+
+    function formatBytes(bytes) {
+      if (!bytes) return "0 B";
+      const units = ["B", "KB", "MB", "GB"];
+      const index = Math.floor(Math.log(bytes) / Math.log(1024));
+      return `${(bytes / Math.pow(1024, index)).toFixed(1)} ${units[index]}`;
+    }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+  </script>
 </body>
 </html>
