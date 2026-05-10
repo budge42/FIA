@@ -7,7 +7,6 @@
   <title>FIA — Foreign Investment Assistant</title>
 
   <style>
-
     :root{
       --navy:#082b63;
       --navyDark:#041936;
@@ -22,9 +21,7 @@
       --error:#b42318;
     }
 
-    *{
-      box-sizing:border-box;
-    }
+    *{ box-sizing:border-box; }
 
     body{
       margin:0;
@@ -44,8 +41,6 @@
 
     .badge{
       display:inline-flex;
-      align-items:center;
-      gap:8px;
       border:1px solid rgba(255,255,255,0.2);
       background:rgba(255,255,255,0.08);
       padding:8px 14px;
@@ -132,9 +127,7 @@
       line-height:1.5;
     }
 
-    input[type=file]{
-      display:none;
-    }
+    input[type=file]{ display:none; }
 
     .content{
       display:grid;
@@ -147,9 +140,7 @@
       background:#fbfdff;
     }
 
-    .right{
-      padding:30px;
-    }
+    .right{ padding:30px; }
 
     h2{
       margin:0 0 14px;
@@ -206,7 +197,7 @@
 
     textarea{
       width:100%;
-      min-height:240px;
+      min-height:300px;
       resize:vertical;
       border-radius:18px;
       border:1px solid var(--line);
@@ -252,13 +243,15 @@
       opacity:0.96;
     }
 
+    .primary-btn:disabled{
+      opacity:0.55;
+      cursor:not-allowed;
+      transform:none;
+    }
+
     .secondary-btn{
       background:#edf3fb;
       color:var(--navy);
-    }
-
-    .secondary-btn:hover{
-      background:#dce8f7;
     }
 
     .status{
@@ -271,9 +264,7 @@
       display:none;
     }
 
-    .status.show{
-      display:block;
-    }
+    .status.show{ display:block; }
 
     .output{
       min-height:650px;
@@ -287,9 +278,7 @@
       font-size:15px;
     }
 
-    .empty{
-      color:var(--muted);
-    }
+    .empty{ color:var(--muted); }
 
     .metric-grid{
       display:grid;
@@ -326,60 +315,37 @@
     }
 
     @media(max-width:900px){
-
-      .content{
-        grid-template-columns:1fr;
-      }
-
+      .content{ grid-template-columns:1fr; }
       .left{
         border-right:none;
         border-bottom:1px solid var(--line);
       }
-
-      .metric-grid{
-        grid-template-columns:1fr;
-      }
-
+      .metric-grid{ grid-template-columns:1fr; }
     }
-
   </style>
 </head>
 
 <body>
 
 <header>
+  <div class="badge">FIA · Foreign Investment Assistant</div>
 
-  <div class="badge">
-    FIA · Foreign Investment Assistant
-  </div>
-
-  <h1>
-    Upload files.<br>
-    Generate FIF reports.
-  </h1>
+  <h1>Upload files.<br>Generate FIF reports.</h1>
 
   <div class="subtitle">
     FIA analyses overseas investment data, classifies likely FIF exposure,
     identifies reconciliation issues and generates accountant-ready draft workpapers using AI.
   </div>
-
 </header>
 
 <main>
-
   <section class="panel">
 
     <div class="upload-section">
-
       <label class="upload-box" for="fileInput">
+        <div class="upload-icon">↑</div>
 
-        <div class="upload-icon">
-          ↑
-        </div>
-
-        <div class="upload-title">
-          Upload Broker Files
-        </div>
+        <div class="upload-title">Upload Broker Files</div>
 
         <div class="upload-subtitle">
           Upload CSV, TXT, JSON or broker exports. FIA will extract the data
@@ -400,7 +366,6 @@
           multiple
           accept=".csv,.txt,.json,.md"
         />
-
       </label>
 
       <div class="pill-row">
@@ -411,46 +376,24 @@
         <span class="pill">Stake</span>
         <span class="pill">CSV Exports</span>
       </div>
-
     </div>
 
     <div class="content">
-
       <div class="left">
-
         <h2>Source Files</h2>
 
         <div class="small">
-          Paste your OpenAI API key below for testing. In production,
-          move this to a backend service.
-        </div>
-
-        <div style="margin-top:18px;">
-
-          <textarea
-            id="apiKey"
-            style="min-height:70px;"
-            placeholder="Paste OpenAI API key here..."
-          ></textarea>
-
+          Upload files or paste broker text below. Your OpenAI API key is stored securely in Vercel.
         </div>
 
         <div class="file-list" id="fileList">
-
           <div class="file-item">
-            <div class="file-name">
-              No files uploaded yet
-            </div>
-
-            <div class="file-meta">
-              Choose files to begin.
-            </div>
+            <div class="file-name">No files uploaded yet</div>
+            <div class="file-meta">Choose files or paste text to begin.</div>
           </div>
-
         </div>
 
         <div class="metric-grid">
-
           <div class="metric">
             <strong id="fileCount">0</strong>
             <span>Files</span>
@@ -465,22 +408,18 @@
             <strong>GPT-5</strong>
             <span>AI Model</span>
           </div>
-
         </div>
 
         <div style="margin-top:24px;">
-
           <h2>Extracted Text</h2>
 
           <textarea
             id="extractedText"
-            placeholder="Extracted file text will appear here..."
+            placeholder="Paste broker statement text here, or upload CSV/TXT files above..."
           ></textarea>
-
         </div>
 
         <div class="actions">
-
           <button
             class="primary-btn"
             onclick="analyseFiles()"
@@ -495,17 +434,12 @@
           >
             Clear
           </button>
-
         </div>
 
-        <div class="status" id="statusBox">
-          Ready.
-        </div>
-
+        <div class="status" id="statusBox">Ready.</div>
       </div>
 
       <div class="right">
-
         <h2>AI Output</h2>
 
         <div class="output empty" id="output">
@@ -522,13 +456,9 @@ The report may include:
 • missing information
 • draft accountant review notes
         </div>
-
       </div>
-
     </div>
-
   </section>
-
 </main>
 
 <footer>
@@ -536,237 +466,153 @@ The report may include:
 </footer>
 
 <script>
+  const API_ENDPOINT = "/api/analyse";
 
-const SYSTEM_PROMPT = `
-You are FIA (Foreign Investment Assistant).
+  const fileInput = document.getElementById("fileInput");
+  const fileList = document.getElementById("fileList");
+  const extractedText = document.getElementById("extractedText");
+  const output = document.getElementById("output");
+  const statusBox = document.getElementById("statusBox");
+  const fileCount = document.getElementById("fileCount");
+  const charCount = document.getElementById("charCount");
+  const analyseButton = document.getElementById("analyseButton");
 
-You are an expert New Zealand overseas investment and FIF assistant.
+  let uploadedFiles = [];
 
-Analyse the uploaded investment data and produce a professional accountant-style report.
+  fileInput.addEventListener("change", async (event) => {
+    const files = Array.from(event.target.files || []);
 
-Output sections:
+    if (!files.length) return;
 
-1. Executive Summary
-2. Investments Identified
-3. Likely FIF Investments
-4. Likely Exempt Investments
-5. Australian Exemption Issues
-6. Dividends and Foreign Tax
-7. Reconciliation Issues
-8. Missing Information
-9. Draft FIF Calculation Notes
-10. Accountant Review Notes
-11. Disclaimer
+    uploadedFiles = files;
+    fileList.innerHTML = "";
 
-Rules:
-- do not invent numbers
-- clearly state assumptions
-- clearly separate identified facts from assumptions
-- flag anything uncertain for manual review
-- professional concise tone
-`;
+    let combinedText = "";
 
-const fileInput = document.getElementById('fileInput');
-const fileList = document.getElementById('fileList');
-const extractedText = document.getElementById('extractedText');
-const output = document.getElementById('output');
-const statusBox = document.getElementById('statusBox');
+    for (const file of files) {
+      const item = document.createElement("div");
+      item.className = "file-item";
+      item.innerHTML = `
+        <div class="file-name">${escapeHtml(file.name)}</div>
+        <div class="file-meta">${formatBytes(file.size)}</div>
+      `;
+      fileList.appendChild(item);
 
-const fileCount = document.getElementById('fileCount');
-const charCount = document.getElementById('charCount');
+      try {
+        const text = await file.text();
+        combinedText += `\n\n--- FILE: ${file.name} ---\n\n${text}`;
+      } catch (err) {
+        combinedText += `\n\n--- FILE ERROR: ${file.name} ---\n\nCould not read file.`;
+      }
+    }
 
-let uploadedFiles = [];
+    extractedText.value = combinedText.trim();
+    updateStats();
+    setStatus("Files loaded.");
+  });
 
-fileInput.addEventListener('change', async (event) => {
+  extractedText.addEventListener("input", updateStats);
 
-  const files = Array.from(event.target.files);
+  async function analyseFiles() {
+    const content = extractedText.value.trim();
 
-  if(!files.length) return;
+    if (!content) {
+      alert("Please paste broker data or upload files first.");
+      return;
+    }
 
-  uploadedFiles = files;
+    analyseButton.disabled = true;
+    output.classList.remove("empty");
+    output.textContent = "";
+    setStatus("FIA is analysing files...");
 
-  fileList.innerHTML = '';
+    try {
+      const response = await fetch(API_ENDPOINT, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          content: content
+        })
+      });
 
-  let combinedText = '';
+      const data = await response.json();
 
-  for(const file of files){
+      if (!response.ok) {
+        throw new Error(data.error || JSON.stringify(data, null, 2));
+      }
 
-    const item = document.createElement('div');
+      output.textContent =
+        data.output_text ||
+        data.report ||
+        JSON.stringify(data, null, 2);
 
-    item.className = 'file-item';
+      setStatus("Report generated.");
 
-    item.innerHTML = `
-      <div class="file-name">${escapeHtml(file.name)}</div>
-      <div class="file-meta">${formatBytes(file.size)}</div>
+    } catch (err) {
+      output.textContent =
+        "Error:\n\n" +
+        err.message +
+        "\n\nChecks:\n" +
+        "1. Make sure api/analyse.js exists in GitHub.\n" +
+        "2. Make sure Vercel redeployed after the file was added.\n" +
+        "3. Make sure OPENAI_API_KEY exists in Vercel Environment Variables.\n" +
+        "4. Make sure you are opening the Vercel URL, not only GitHub Pages.";
+
+      setStatus("Error generating report.");
+
+    } finally {
+      analyseButton.disabled = false;
+    }
+  }
+
+  function clearAll() {
+    uploadedFiles = [];
+    fileInput.value = "";
+    extractedText.value = "";
+
+    output.textContent = "No report generated yet.";
+    output.classList.add("empty");
+
+    fileList.innerHTML = `
+      <div class="file-item">
+        <div class="file-name">No files uploaded yet</div>
+        <div class="file-meta">Choose files or paste text to begin.</div>
+      </div>
     `;
 
-    fileList.appendChild(item);
-
-    try{
-
-      const text = await file.text();
-
-      combinedText += `
-
---- FILE: ${file.name} ---
-
-${text}
-`;
-
-    }catch(err){
-
-      combinedText += `
-
---- FILE ERROR: ${file.name} ---
-
-Could not read file.
-`;
-
-    }
-
+    updateStats();
+    setStatus("Cleared.");
   }
 
-  extractedText.value = combinedText.trim();
-
-  updateStats();
-
-  setStatus('Files loaded.');
-
-});
-
-async function analyseFiles(){
-
-  const apiKey = document.getElementById('apiKey').value.trim();
-  const content = extractedText.value.trim();
-
-  if(!apiKey){
-    alert('Please enter OpenAI API key.');
-    return;
+  function updateStats() {
+    fileCount.textContent = uploadedFiles.length;
+    charCount.textContent = extractedText.value.length.toLocaleString();
   }
 
-  if(!content){
-    alert('Please paste broker data or upload files first.');
-    return;
+  function setStatus(message) {
+    statusBox.textContent = message;
+    statusBox.classList.add("show");
   }
 
-  output.classList.remove('empty');
-  output.textContent = '';
-  setStatus('FIA is analysing files...');
+  function formatBytes(bytes) {
+    if (!bytes) return "0 B";
 
-  try{
+    const units = ["B", "KB", "MB", "GB"];
+    const index = Math.floor(Math.log(bytes) / Math.log(1024));
 
-    const response = await fetch(
-  'https://YOUR-VERCEL-PROJECT.vercel.app/api/analyse',
-  {
-    method:'POST',
-    headers:{
-      'Content-Type':'application/json'
-    },
-    body:JSON.stringify({
-      content:'Analyse this broker statement and generate the FIA report:\n\n' + content
-    })
+    return (bytes / Math.pow(1024, index)).toFixed(1) + " " + units[index];
   }
-);
 
-    const data = await response.json();
-    console.log(data);
-
-    if(!response.ok){
-      throw new Error(data.error?.message || JSON.stringify(data, null, 2));
-    }
-
-    output.textContent =
-      data.output_text ||
-      data.output?.[0]?.content?.[0]?.text ||
-      JSON.stringify(data, null, 2);
-
-    setStatus('Report generated.');
-
-  }catch(err){
-
-    output.textContent =
-      'Error:\n\n' + err.message;
-
-    setStatus('Error generating report.');
-
+  function escapeHtml(value) {
+    return String(value)
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
   }
-}
-
-function clearAll(){
-
-  uploadedFiles = [];
-
-  extractedText.value = '';
-
-  output.textContent =
-    'No report generated yet.';
-
-  output.classList.add('empty');
-
-  fileList.innerHTML = `
-    <div class="file-item">
-      <div class="file-name">
-        No files uploaded yet
-      </div>
-
-      <div class="file-meta">
-        Choose files to begin.
-      </div>
-    </div>
-  `;
-
-  updateStats();
-
-  setStatus('Cleared.');
-
-}
-
-function updateStats(){
-
-  fileCount.textContent =
-    uploadedFiles.length;
-
-  charCount.textContent =
-    extractedText.value.length.toLocaleString();
-
-}
-
-function setStatus(message){
-
-  statusBox.textContent = message;
-
-  statusBox.classList.add('show');
-
-}
-
-function formatBytes(bytes){
-
-  if(!bytes) return '0 B';
-
-  const units = ['B','KB','MB','GB'];
-
-  const index =
-    Math.floor(Math.log(bytes)/Math.log(1024));
-
-  return (
-    (bytes / Math.pow(1024,index)).toFixed(1)
-    + ' '
-    + units[index]
-  );
-
-}
-
-function escapeHtml(value){
-
-  return String(value)
-    .replaceAll('&','&amp;')
-    .replaceAll('<','&lt;')
-    .replaceAll('>','&gt;')
-    .replaceAll('"','&quot;')
-    .replaceAll("'","&#039;");
-
-}
-
 </script>
 
 </body>
