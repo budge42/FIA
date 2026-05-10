@@ -359,6 +359,34 @@
       margin:20px 0;
     }
 
+    .report table{
+      width:100%;
+      border-collapse:collapse;
+      margin:16px 0;
+      font-size:13px;
+      overflow:hidden;
+      border-radius:12px;
+      border:1px solid var(--line);
+    }
+
+    .report th{
+      background:#eef4ff;
+      color:var(--navy);
+      text-align:left;
+      padding:10px;
+      border-bottom:1px solid var(--line);
+    }
+
+    .report td{
+      padding:10px;
+      border-bottom:1px solid var(--line);
+      vertical-align:top;
+    }
+
+    .report tr:last-child td{
+      border-bottom:none;
+    }
+
     footer{
       text-align:center;
       padding:34px 20px;
@@ -429,9 +457,7 @@
     <div class="content">
       <div class="left">
         <h2>Source Files</h2>
-        <div class="small">
-          
-        </div>
+        <div class="small"></div>
 
         <div class="file-list" id="fileList">
           <div class="file-item">
@@ -622,7 +648,7 @@ Checks:
 
     output.innerHTML = `
       <div class="empty">
-No report creted yet.
+No report created yet.
 
 The report may include:
 
@@ -677,12 +703,18 @@ The report may include:
   function markdownToHtml(markdown) {
     let html = escapeHtml(markdown);
 
+    html = html.replace(/\|(.+)\|/g, function(row) {
+      return row;
+    });
+
     html = html.replace(/^### (.*)$/gm, "<h3>$1</h3>");
     html = html.replace(/^## (.*)$/gm, "<h2>$1</h2>");
     html = html.replace(/^# (.*)$/gm, "<h1>$1</h1>");
 
     html = html.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
     html = html.replace(/^---$/gm, "<hr>");
+
+    html = convertMarkdownTables(html);
 
     html = html.replace(/^\- (.*)$/gm, "<li>$1</li>");
     html = html.replace(/(<li>.*<\/li>)/gs, function(match) {
@@ -697,7 +729,8 @@ The report may include:
           block.startsWith("<h2") ||
           block.startsWith("<h3") ||
           block.startsWith("<ul") ||
-          block.startsWith("<hr")
+          block.startsWith("<hr") ||
+          block.startsWith("<table")
         ) {
           return block;
         }
@@ -706,6 +739,46 @@ The report may include:
       .join("");
 
     return html;
+  }
+
+  function convertMarkdownTables(text) {
+    const lines = text.split("\n");
+    const result = [];
+    let i = 0;
+
+    while (i < lines.length) {
+      if (
+        lines[i]?.includes("|") &&
+        lines[i + 1]?.match(/^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/)
+      ) {
+        const headers = lines[i].split("|").map(x => x.trim()).filter(Boolean);
+        i += 2;
+
+        const rows = [];
+        while (i < lines.length && lines[i].includes("|")) {
+          rows.push(lines[i].split("|").map(x => x.trim()).filter(Boolean));
+          i++;
+        }
+
+        let table = "<table><thead><tr>";
+        headers.forEach(h => table += `<th>${h}</th>`);
+        table += "</tr></thead><tbody>";
+
+        rows.forEach(row => {
+          table += "<tr>";
+          row.forEach(cell => table += `<td>${cell}</td>`);
+          table += "</tr>";
+        });
+
+        table += "</tbody></table>";
+        result.push(table);
+      } else {
+        result.push(lines[i]);
+        i++;
+      }
+    }
+
+    return result.join("\n");
   }
 </script>
 
