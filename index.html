@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-
   <title>FIA — Foreign Investment Assistant</title>
 
   <style>
@@ -11,14 +10,11 @@
       --navy:#082b63;
       --navyDark:#041936;
       --blue:#0f5bd7;
-      --white:#ffffff;
-      --bg:#f4f7fb;
+      --pale:#f4f7fb;
       --line:#d9e2ef;
       --text:#0f1728;
       --muted:#66758a;
       --shadow:0 24px 60px rgba(0,0,0,0.08);
-      --success:#0f8a5f;
-      --error:#b42318;
     }
 
     *{ box-sizing:border-box; }
@@ -32,7 +28,7 @@
 
     header{
       background:
-        radial-gradient(circle at top right, rgba(15,91,215,0.28), transparent 35%),
+        radial-gradient(circle at top right, rgba(15,91,215,0.32), transparent 34%),
         linear-gradient(135deg,var(--navy),var(--navyDark));
       color:white;
       text-align:center;
@@ -41,12 +37,13 @@
 
     .badge{
       display:inline-flex;
-      border:1px solid rgba(255,255,255,0.2);
-      background:rgba(255,255,255,0.08);
+      border:1px solid rgba(255,255,255,0.22);
+      background:rgba(255,255,255,0.09);
       padding:8px 14px;
       border-radius:999px;
       font-size:14px;
       margin-bottom:18px;
+      font-weight:700;
     }
 
     h1{
@@ -87,7 +84,7 @@
     .upload-box{
       border:2px dashed #a8bfdc;
       border-radius:24px;
-      padding:44px 24px;
+      padding:42px 24px;
       text-align:center;
       cursor:pointer;
       transition:0.2s;
@@ -266,20 +263,6 @@
 
     .status.show{ display:block; }
 
-    .output{
-      min-height:650px;
-      border:1px solid var(--line);
-      border-radius:22px;
-      background:white;
-      padding:22px;
-      line-height:1.7;
-      white-space:pre-wrap;
-      overflow:auto;
-      font-size:15px;
-    }
-
-    .empty{ color:var(--muted); }
-
     .metric-grid{
       display:grid;
       grid-template-columns:repeat(3,1fr);
@@ -306,6 +289,76 @@
       color:var(--muted);
     }
 
+    .output{
+      min-height:650px;
+      border:1px solid var(--line);
+      border-radius:22px;
+      background:white;
+      padding:0;
+      overflow:auto;
+    }
+
+    .empty{
+      color:var(--muted);
+      padding:22px;
+      white-space:pre-wrap;
+      line-height:1.7;
+    }
+
+    .report{
+      padding:26px;
+      line-height:1.65;
+      font-size:15px;
+      color:#172033;
+    }
+
+    .report h1,
+    .report h2,
+    .report h3{
+      color:var(--navy);
+      margin:22px 0 10px;
+      letter-spacing:-0.02em;
+    }
+
+    .report h1{
+      font-size:28px;
+      margin-top:0;
+      padding-bottom:12px;
+      border-bottom:1px solid var(--line);
+    }
+
+    .report h2{
+      font-size:20px;
+      padding-top:8px;
+    }
+
+    .report h3{
+      font-size:17px;
+    }
+
+    .report p{
+      margin:8px 0;
+    }
+
+    .report ul{
+      margin:8px 0 14px 20px;
+      padding:0;
+    }
+
+    .report li{
+      margin:6px 0;
+    }
+
+    .report strong{
+      color:#061a3f;
+    }
+
+    .report hr{
+      border:none;
+      border-top:1px solid var(--line);
+      margin:20px 0;
+    }
+
     footer{
       text-align:center;
       padding:34px 20px;
@@ -329,9 +382,7 @@
 
 <header>
   <div class="badge">FIA · Foreign Investment Assistant</div>
-
   <h1>Upload files.<br>Generate FIF reports.</h1>
-
   <div class="subtitle">
     FIA analyses overseas investment data, classifies likely FIF exposure,
     identifies reconciliation issues and generates accountant-ready draft workpapers using AI.
@@ -340,13 +391,10 @@
 
 <main>
   <section class="panel">
-
     <div class="upload-section">
       <label class="upload-box" for="fileInput">
         <div class="upload-icon">↑</div>
-
         <div class="upload-title">Upload Broker Files</div>
-
         <div class="upload-subtitle">
           Upload CSV, TXT, JSON or broker exports. FIA will extract the data
           and generate a professional AI draft report.
@@ -381,7 +429,6 @@
     <div class="content">
       <div class="left">
         <h2>Source Files</h2>
-
         <div class="small">
           Upload files or paste broker text below. Your OpenAI API key is stored securely in Vercel.
         </div>
@@ -398,12 +445,10 @@
             <strong id="fileCount">0</strong>
             <span>Files</span>
           </div>
-
           <div class="metric">
             <strong id="charCount">0</strong>
             <span>Characters</span>
           </div>
-
           <div class="metric">
             <strong>GPT-5</strong>
             <span>AI Model</span>
@@ -412,7 +457,6 @@
 
         <div style="margin-top:24px;">
           <h2>Extracted Text</h2>
-
           <textarea
             id="extractedText"
             placeholder="Paste broker statement text here, or upload CSV/TXT files above..."
@@ -441,8 +485,8 @@
 
       <div class="right">
         <h2>AI Output</h2>
-
-        <div class="output empty" id="output">
+        <div class="output" id="output">
+          <div class="empty">
 No report generated yet.
 
 The report may include:
@@ -455,6 +499,7 @@ The report may include:
 • reconciliation issues
 • missing information
 • draft accountant review notes
+          </div>
         </div>
       </div>
     </div>
@@ -481,7 +526,6 @@ The report may include:
 
   fileInput.addEventListener("change", async (event) => {
     const files = Array.from(event.target.files || []);
-
     if (!files.length) return;
 
     uploadedFiles = files;
@@ -522,8 +566,7 @@ The report may include:
     }
 
     analyseButton.disabled = true;
-    output.classList.remove("empty");
-    output.textContent = "";
+    output.innerHTML = `<div class="empty">FIA is analysing files...</div>`;
     setStatus("FIA is analysing files...");
 
     try {
@@ -532,9 +575,7 @@ The report may include:
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({
-          content: content
-        })
+        body: JSON.stringify({ content })
       });
 
       const data = await response.json();
@@ -544,26 +585,29 @@ The report may include:
       }
 
       const reportText =
-  data.output_text ||
-  data.report ||
-  data.output?.[0]?.content?.find(item => item.type === "output_text")?.text ||
-  data.output?.[0]?.content?.[0]?.text ||
-  JSON.stringify(data, null, 2);
+        data.output_text ||
+        data.report ||
+        data.output?.[0]?.content?.find(item => item.type === "output_text")?.text ||
+        data.output?.[0]?.content?.[0]?.text ||
+        JSON.stringify(data, null, 2);
 
-output.textContent = reportText;
-
+      output.innerHTML = `<div class="report">${markdownToHtml(reportText)}</div>`;
       setStatus("Report generated.");
 
     } catch (err) {
-      output.textContent =
-        "Error:\n\n" +
-        err.message +
-        "\n\nChecks:\n" +
-        "1. Make sure api/analyse.js exists in GitHub.\n" +
-        "2. Make sure Vercel redeployed after the file was added.\n" +
-        "3. Make sure OPENAI_API_KEY exists in Vercel Environment Variables.\n" +
-        "4. Make sure you are opening the Vercel URL, not only GitHub Pages.";
+      output.innerHTML = `
+        <div class="empty">
+Error:
 
+${escapeHtml(err.message)}
+
+Checks:
+1. Make sure api/analyse.js exists in GitHub.
+2. Make sure Vercel redeployed after the file was added.
+3. Make sure OPENAI_API_KEY exists in Vercel Environment Variables.
+4. Make sure you are opening the Vercel URL, not only GitHub Pages.
+        </div>
+      `;
       setStatus("Error generating report.");
 
     } finally {
@@ -576,8 +620,22 @@ output.textContent = reportText;
     fileInput.value = "";
     extractedText.value = "";
 
-    output.textContent = "No report generated yet.";
-    output.classList.add("empty");
+    output.innerHTML = `
+      <div class="empty">
+No report generated yet.
+
+The report may include:
+
+• overseas investments identified
+• likely FIF investments
+• likely exempt investments
+• Australian exemption issues
+• dividends & withholding tax
+• reconciliation issues
+• missing information
+• draft accountant review notes
+      </div>
+    `;
 
     fileList.innerHTML = `
       <div class="file-item">
@@ -602,10 +660,8 @@ output.textContent = reportText;
 
   function formatBytes(bytes) {
     if (!bytes) return "0 B";
-
     const units = ["B", "KB", "MB", "GB"];
     const index = Math.floor(Math.log(bytes) / Math.log(1024));
-
     return (bytes / Math.pow(1024, index)).toFixed(1) + " " + units[index];
   }
 
@@ -616,6 +672,40 @@ output.textContent = reportText;
       .replaceAll(">", "&gt;")
       .replaceAll('"', "&quot;")
       .replaceAll("'", "&#039;");
+  }
+
+  function markdownToHtml(markdown) {
+    let html = escapeHtml(markdown);
+
+    html = html.replace(/^### (.*)$/gm, "<h3>$1</h3>");
+    html = html.replace(/^## (.*)$/gm, "<h2>$1</h2>");
+    html = html.replace(/^# (.*)$/gm, "<h1>$1</h1>");
+
+    html = html.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
+    html = html.replace(/^---$/gm, "<hr>");
+
+    html = html.replace(/^\- (.*)$/gm, "<li>$1</li>");
+    html = html.replace(/(<li>.*<\/li>)/gs, function(match) {
+      return "<ul>" + match + "</ul>";
+    });
+
+    html = html
+      .split(/\n{2,}/)
+      .map(block => {
+        if (
+          block.startsWith("<h1") ||
+          block.startsWith("<h2") ||
+          block.startsWith("<h3") ||
+          block.startsWith("<ul") ||
+          block.startsWith("<hr")
+        ) {
+          return block;
+        }
+        return "<p>" + block.replace(/\n/g, "<br>") + "</p>";
+      })
+      .join("");
+
+    return html;
   }
 </script>
 
