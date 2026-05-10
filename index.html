@@ -656,28 +656,17 @@ async function analyseFiles(){
   try{
 
     const response = await fetch(
-      'https://api.openai.com/v1/responses',
-      {
-        method:'POST',
-        headers:{
-          'Content-Type':'application/json',
-          'Authorization':'Bearer ' + apiKey
-        },
-        body:JSON.stringify({
-          model:'gpt-5.5',
-          input:[
-            {
-              role:'system',
-              content:SYSTEM_PROMPT
-            },
-            {
-              role:'user',
-              content:'Analyse this broker statement and generate the FIA report:\n\n' + content
-            }
-          ]
-        })
-      }
-    );
+  'https://YOUR-VERCEL-PROJECT.vercel.app/api/analyse',
+  {
+    method:'POST',
+    headers:{
+      'Content-Type':'application/json'
+    },
+    body:JSON.stringify({
+      content:'Analyse this broker statement and generate the FIA report:\n\n' + content
+    })
+  }
+);
 
     const data = await response.json();
     console.log(data);
