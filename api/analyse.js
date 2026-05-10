@@ -125,7 +125,7 @@ ${content}
       body: JSON.stringify({
         model: "gpt-5.4-mini",
         reasoning: { effort: "medium" },
-        max_output_tokens: 2000,
+        max_output_tokens: 8000,
         text: {
           format: { type: "text" },
           verbosity: "medium"
