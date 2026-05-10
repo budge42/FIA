@@ -2,661 +2,799 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
   <title>FIA — Foreign Investment Assistant</title>
 
   <style>
-    :root {
-      --navy: #00205b;
-      --navy-dark: #00143a;
-      --blue: #005eb8;
-      --white: #ffffff;
-      --offwhite: #f5f8fc;
-      --text: #07172f;
-      --muted: #5e6b7c;
-      --line: #d9e2ef;
-      --success: #0f8a5f;
-      --warning: #b7791f;
-      --danger: #b42318;
-      --shadow: 0 22px 60px rgba(0, 32, 91, 0.12);
+
+    :root{
+      --navy:#082b63;
+      --navyDark:#041936;
+      --blue:#0f5bd7;
+      --white:#ffffff;
+      --bg:#f4f7fb;
+      --line:#d9e2ef;
+      --text:#0f1728;
+      --muted:#66758a;
+      --shadow:0 24px 60px rgba(0,0,0,0.08);
+      --success:#0f8a5f;
+      --error:#b42318;
     }
 
-    * {
-      box-sizing: border-box;
+    *{
+      box-sizing:border-box;
     }
 
-    body {
-      margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: linear-gradient(180deg, var(--offwhite), #ffffff);
-      color: var(--text);
+    body{
+      margin:0;
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background:linear-gradient(180deg,#eef3fa,#ffffff);
+      color:var(--text);
     }
 
-    header {
+    header{
       background:
-        radial-gradient(circle at top right, rgba(0, 94, 184, 0.35), transparent 35%),
-        linear-gradient(135deg, var(--navy), var(--navy-dark));
-      color: white;
-      padding: 56px 22px 64px;
-      text-align: center;
+        radial-gradient(circle at top right, rgba(15,91,215,0.28), transparent 35%),
+        linear-gradient(135deg,var(--navy),var(--navyDark));
+      color:white;
+      text-align:center;
+      padding:64px 24px 90px;
     }
 
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 14px;
-      border: 1px solid rgba(255,255,255,0.25);
-      border-radius: 999px;
-      background: rgba(255,255,255,0.08);
-      font-size: 14px;
-      margin-bottom: 20px;
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      border:1px solid rgba(255,255,255,0.2);
+      background:rgba(255,255,255,0.08);
+      padding:8px 14px;
+      border-radius:999px;
+      font-size:14px;
+      margin-bottom:18px;
     }
 
-    h1 {
-      margin: 0;
-      font-size: clamp(42px, 7vw, 76px);
-      letter-spacing: -0.06em;
-      line-height: 0.95;
+    h1{
+      margin:0;
+      font-size:clamp(42px,8vw,82px);
+      letter-spacing:-0.06em;
+      line-height:0.95;
     }
 
-    .subtitle {
-      max-width: 720px;
-      margin: 22px auto 0;
-      font-size: 19px;
-      line-height: 1.55;
-      color: rgba(255,255,255,0.82);
+    .subtitle{
+      max-width:760px;
+      margin:24px auto 0;
+      color:rgba(255,255,255,0.82);
+      line-height:1.6;
+      font-size:19px;
     }
 
-    main {
-      max-width: 1100px;
-      margin: -42px auto 80px;
-      padding: 0 20px;
+    main{
+      max-width:1200px;
+      margin:-50px auto 80px;
+      padding:0 20px;
     }
 
-    .panel {
-      background: white;
-      border: 1px solid var(--line);
-      border-radius: 28px;
-      box-shadow: var(--shadow);
-      overflow: hidden;
+    .panel{
+      background:white;
+      border-radius:30px;
+      overflow:hidden;
+      border:1px solid var(--line);
+      box-shadow:var(--shadow);
     }
 
-    .upload-zone {
-      padding: 34px;
-      text-align: center;
-      border-bottom: 1px solid var(--line);
-      background: linear-gradient(180deg, #ffffff, #f8fbff);
+    .upload-section{
+      padding:34px;
+      border-bottom:1px solid var(--line);
+      background:linear-gradient(180deg,#ffffff,#f7faff);
     }
 
-    .upload-box {
-      border: 2px dashed #a9bdd8;
-      border-radius: 24px;
-      padding: 38px 24px;
-      background: white;
-      transition: 0.2s;
-      cursor: pointer;
+    .upload-box{
+      border:2px dashed #a8bfdc;
+      border-radius:24px;
+      padding:44px 24px;
+      text-align:center;
+      cursor:pointer;
+      transition:0.2s;
+      background:white;
     }
 
-    .upload-box:hover,
-    .upload-box.dragover {
-      border-color: var(--blue);
-      background: #f2f7ff;
-      transform: translateY(-1px);
+    .upload-box:hover{
+      border-color:var(--blue);
+      background:#f2f7ff;
+      transform:translateY(-1px);
     }
 
-    .upload-icon {
-      width: 72px;
-      height: 72px;
-      border-radius: 22px;
-      background: var(--navy);
-      color: white;
-      display: grid;
-      place-items: center;
-      margin: 0 auto 18px;
-      font-size: 34px;
-      font-weight: 800;
+    .upload-icon{
+      width:78px;
+      height:78px;
+      margin:0 auto 18px;
+      border-radius:22px;
+      background:linear-gradient(135deg,var(--navy),var(--blue));
+      color:white;
+      display:grid;
+      place-items:center;
+      font-size:34px;
+      font-weight:800;
     }
 
-    .upload-title {
-      font-size: 26px;
-      font-weight: 800;
-      letter-spacing: -0.03em;
-      margin-bottom: 8px;
+    .upload-title{
+      font-size:28px;
+      font-weight:800;
+      letter-spacing:-0.03em;
+      margin-bottom:10px;
     }
 
-    .upload-subtitle {
-      color: var(--muted);
-      max-width: 620px;
-      margin: 0 auto 18px;
-      line-height: 1.5;
+    .upload-subtitle{
+      max-width:700px;
+      margin:0 auto 18px;
+      color:var(--muted);
+      line-height:1.5;
     }
 
-    input[type="file"] {
-      display: none;
+    input[type=file]{
+      display:none;
     }
 
-    button {
-      border: none;
-      outline: none;
-      cursor: pointer;
-      border-radius: 14px;
-      padding: 14px 20px;
-      font-size: 15px;
-      font-weight: 800;
-      background: var(--navy);
-      color: white;
-      transition: 0.2s;
+    .content{
+      display:grid;
+      grid-template-columns:0.9fr 1.1fr;
     }
 
-    button:hover {
-      background: var(--blue);
-      transform: translateY(-1px);
+    .left{
+      padding:30px;
+      border-right:1px solid var(--line);
+      background:#fbfdff;
     }
 
-    button:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-      transform: none;
+    .right{
+      padding:30px;
     }
 
-    .secondary-button {
-      background: #eef3fa;
-      color: var(--navy);
+    h2{
+      margin:0 0 14px;
+      font-size:24px;
+      letter-spacing:-0.03em;
     }
 
-    .secondary-button:hover {
-      background: #dfeaf7;
+    .small{
+      font-size:13px;
+      color:var(--muted);
+      line-height:1.45;
     }
 
-    .content {
-      display: grid;
-      grid-template-columns: 0.9fr 1.1fr;
-      gap: 0;
+    .pill-row{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      margin-top:16px;
     }
 
-    .left,
-    .right {
-      padding: 28px;
+    .pill{
+      border:1px solid var(--line);
+      background:white;
+      border-radius:999px;
+      padding:7px 11px;
+      font-size:12px;
+      color:var(--muted);
+      font-weight:700;
     }
 
-    .left {
-      border-right: 1px solid var(--line);
-      background: #fbfdff;
+    .file-list{
+      display:grid;
+      gap:10px;
+      margin-top:20px;
     }
 
-    h2 {
-      margin: 0 0 14px;
-      font-size: 22px;
-      letter-spacing: -0.03em;
+    .file-item{
+      border:1px solid var(--line);
+      border-radius:16px;
+      background:white;
+      padding:14px;
     }
 
-    .small {
-      font-size: 13px;
-      color: var(--muted);
-      line-height: 1.45;
+    .file-name{
+      font-weight:750;
+      margin-bottom:4px;
+      word-break:break-word;
     }
 
-    .file-list {
-      display: grid;
-      gap: 10px;
-      margin-top: 18px;
+    .file-meta{
+      font-size:13px;
+      color:var(--muted);
     }
 
-    .file-item {
-      border: 1px solid var(--line);
-      background: white;
-      border-radius: 16px;
-      padding: 14px;
+    textarea{
+      width:100%;
+      min-height:240px;
+      resize:vertical;
+      border-radius:18px;
+      border:1px solid var(--line);
+      padding:16px;
+      font-size:14px;
+      font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+      outline:none;
+      background:white;
+      color:var(--text);
+      line-height:1.55;
     }
 
-    .file-name {
-      font-weight: 750;
-      margin-bottom: 4px;
-      word-break: break-word;
+    textarea:focus{
+      border-color:var(--blue);
+      box-shadow:0 0 0 4px rgba(15,91,215,0.08);
     }
 
-    .file-meta {
-      color: var(--muted);
-      font-size: 13px;
+    .actions{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-top:18px;
     }
 
-    textarea {
-      width: 100%;
-      min-height: 220px;
-      resize: vertical;
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      padding: 14px;
-      font-size: 14px;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      color: var(--text);
-      outline: none;
-      background: white;
-      line-height: 1.5;
+    button{
+      border:none;
+      outline:none;
+      cursor:pointer;
+      border-radius:14px;
+      padding:14px 20px;
+      font-size:15px;
+      font-weight:800;
+      transition:0.2s;
     }
 
-    textarea:focus {
-      border-color: var(--blue);
-      box-shadow: 0 0 0 4px rgba(0, 94, 184, 0.08);
+    .primary-btn{
+      background:linear-gradient(135deg,var(--navy),var(--blue));
+      color:white;
     }
 
-    .actions {
-      display: flex;
-      gap: 12px;
-      margin-top: 16px;
-      flex-wrap: wrap;
+    .primary-btn:hover{
+      transform:translateY(-1px);
+      opacity:0.96;
     }
 
-    .status {
-      margin-top: 14px;
-      padding: 12px 14px;
-      border-radius: 14px;
-      background: #eef3fa;
-      color: var(--navy);
-      font-size: 14px;
-      display: none;
+    .secondary-btn{
+      background:#edf3fb;
+      color:var(--navy);
     }
 
-    .status.show {
-      display: block;
+    .secondary-btn:hover{
+      background:#dce8f7;
     }
 
-    .output {
-      min-height: 420px;
-      white-space: pre-wrap;
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      background: #ffffff;
-      padding: 20px;
-      line-height: 1.65;
-      color: #14233a;
-      font-size: 15px;
+    .status{
+      margin-top:18px;
+      padding:13px 14px;
+      border-radius:14px;
+      background:#eef4ff;
+      color:var(--navy);
+      font-size:14px;
+      display:none;
     }
 
-    .output.empty {
-      color: var(--muted);
+    .status.show{
+      display:block;
     }
 
-    .pill-row {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      margin-top: 16px;
+    .output{
+      min-height:650px;
+      border:1px solid var(--line);
+      border-radius:22px;
+      background:white;
+      padding:22px;
+      line-height:1.7;
+      white-space:pre-wrap;
+      overflow:auto;
+      font-size:15px;
     }
 
-    .pill {
-      border: 1px solid var(--line);
-      background: white;
-      color: var(--muted);
-      padding: 7px 10px;
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: 700;
+    .empty{
+      color:var(--muted);
     }
 
-    .mini-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin-top: 18px;
+    .metric-grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:12px;
+      margin-top:18px;
     }
 
-    .metric {
-      background: white;
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      padding: 14px;
+    .metric{
+      border:1px solid var(--line);
+      border-radius:16px;
+      background:white;
+      padding:14px;
     }
 
-    .metric strong {
-      display: block;
-      color: var(--navy);
-      font-size: 18px;
-      margin-bottom: 2px;
+    .metric strong{
+      display:block;
+      font-size:20px;
+      color:var(--navy);
+      margin-bottom:2px;
     }
 
-    .metric span {
-      color: var(--muted);
-      font-size: 12px;
+    .metric span{
+      font-size:12px;
+      color:var(--muted);
     }
 
-    footer {
-      text-align: center;
-      color: var(--muted);
-      padding: 32px 20px;
-      border-top: 1px solid var(--line);
-      background: white;
+    footer{
+      text-align:center;
+      padding:34px 20px;
+      color:var(--muted);
+      border-top:1px solid var(--line);
+      background:white;
     }
 
-    @media (max-width: 850px) {
-      .content {
-        grid-template-columns: 1fr;
+    @media(max-width:900px){
+
+      .content{
+        grid-template-columns:1fr;
       }
 
-      .left {
-        border-right: none;
-        border-bottom: 1px solid var(--line);
+      .left{
+        border-right:none;
+        border-bottom:1px solid var(--line);
       }
 
-      .mini-grid {
-        grid-template-columns: 1fr;
+      .metric-grid{
+        grid-template-columns:1fr;
       }
+
     }
+
   </style>
 </head>
 
 <body>
-  <header>
-    <div class="badge">FIA · Foreign Investment Assistant</div>
-    <h1>Upload files.<br />Generate FIF reports.</h1>
-    <p class="subtitle">
-      A clean AI workpaper assistant for New Zealand overseas investment tax.
-      Upload broker files, extract investment data, classify likely FIF exposure,
-      and generate a review-ready draft report.
-    </p>
-  </header>
 
-  <main>
-    <section class="panel">
-      <div class="upload-zone">
-        <label class="upload-box" id="uploadBox" for="fileInput">
-          <div class="upload-icon">↑</div>
-          <div class="upload-title">Upload broker files</div>
-          <p class="upload-subtitle">
-            Add CSV, TXT, JSON or statement exports. For GitHub Pages testing, PDFs are not parsed unless your backend handles them.
-          </p>
-          <button type="button" onclick="document.getElementById('fileInput').click()">Choose files</button>
-          <input id="fileInput" type="file" multiple accept=".csv,.txt,.json,.md,.html,.xml,.xlsx,.pdf" />
-        </label>
+<header>
 
-        <div class="pill-row">
-          <span class="pill">Hatch</span>
-          <span class="pill">Sharesies</span>
-          <span class="pill">IBKR</span>
-          <span class="pill">Tiger Brokers</span>
-          <span class="pill">Stake</span>
-          <span class="pill">Custodian reports</span>
+  <div class="badge">
+    FIA · Foreign Investment Assistant
+  </div>
+
+  <h1>
+    Upload files.<br>
+    Generate FIF reports.
+  </h1>
+
+  <div class="subtitle">
+    FIA analyses overseas investment data, classifies likely FIF exposure,
+    identifies reconciliation issues and generates accountant-ready draft workpapers using AI.
+  </div>
+
+</header>
+
+<main>
+
+  <section class="panel">
+
+    <div class="upload-section">
+
+      <label class="upload-box" for="fileInput">
+
+        <div class="upload-icon">
+          ↑
         </div>
+
+        <div class="upload-title">
+          Upload Broker Files
+        </div>
+
+        <div class="upload-subtitle">
+          Upload CSV, TXT, JSON or broker exports. FIA will extract the data
+          and generate a professional AI draft report.
+        </div>
+
+        <button
+          type="button"
+          class="primary-btn"
+          onclick="document.getElementById('fileInput').click()"
+        >
+          Choose Files
+        </button>
+
+        <input
+          type="file"
+          id="fileInput"
+          multiple
+          accept=".csv,.txt,.json,.md"
+        />
+
+      </label>
+
+      <div class="pill-row">
+        <span class="pill">Hatch</span>
+        <span class="pill">Sharesies</span>
+        <span class="pill">IBKR</span>
+        <span class="pill">Tiger Brokers</span>
+        <span class="pill">Stake</span>
+        <span class="pill">CSV Exports</span>
       </div>
 
-      <div class="content">
-        <div class="left">
-          <h2>Source files</h2>
-          <p class="small">
-            FIA will send the extracted text to your backend. Your backend should attach the OpenAI API key securely and call the OpenAI API.
-          </p>
+    </div>
 
-          <div class="file-list" id="fileList">
-            <div class="file-item">
-              <div class="file-name">No files uploaded yet</div>
-              <div class="file-meta">Choose one or more files to begin.</div>
-            </div>
-          </div>
+    <div class="content">
 
-          <div class="mini-grid">
-            <div class="metric">
-              <strong id="fileCount">0</strong>
-              <span>Files</span>
-            </div>
-            <div class="metric">
-              <strong id="charCount">0</strong>
-              <span>Characters</span>
-            </div>
-            <div class="metric">
-              <strong>GPT-5.5</strong>
-              <span>Model</span>
-            </div>
-          </div>
+      <div class="left">
 
-          <div style="margin-top: 22px;">
-            <h2>Extracted text</h2>
-            <textarea id="extractedText" placeholder="Extracted file text will appear here. You can also paste broker data manually."></textarea>
-          </div>
+        <h2>Source Files</h2>
 
-          <div class="actions">
-            <button id="analyseButton" onclick="analyseFiles()">Generate FIA report</button>
-            <button class="secondary-button" onclick="clearAll()">Clear</button>
-          </div>
-
-          <div class="status" id="statusBox">Ready.</div>
+        <div class="small">
+          Paste your OpenAI API key below for testing. In production,
+          move this to a backend service.
         </div>
 
-        <div class="right">
-          <h2>AI output</h2>
-          <div class="output empty" id="output">
+        <div style="margin-top:18px;">
+
+          <textarea
+            id="apiKey"
+            style="min-height:70px;"
+            placeholder="Paste OpenAI API key here..."
+          ></textarea>
+
+        </div>
+
+        <div class="file-list" id="fileList">
+
+          <div class="file-item">
+            <div class="file-name">
+              No files uploaded yet
+            </div>
+
+            <div class="file-meta">
+              Choose files to begin.
+            </div>
+          </div>
+
+        </div>
+
+        <div class="metric-grid">
+
+          <div class="metric">
+            <strong id="fileCount">0</strong>
+            <span>Files</span>
+          </div>
+
+          <div class="metric">
+            <strong id="charCount">0</strong>
+            <span>Characters</span>
+          </div>
+
+          <div class="metric">
+            <strong>GPT-5</strong>
+            <span>AI Model</span>
+          </div>
+
+        </div>
+
+        <div style="margin-top:24px;">
+
+          <h2>Extracted Text</h2>
+
+          <textarea
+            id="extractedText"
+            placeholder="Extracted file text will appear here..."
+          ></textarea>
+
+        </div>
+
+        <div class="actions">
+
+          <button
+            class="primary-btn"
+            onclick="analyseFiles()"
+            id="analyseButton"
+          >
+            Generate FIA Report
+          </button>
+
+          <button
+            class="secondary-btn"
+            onclick="clearAll()"
+          >
+            Clear
+          </button>
+
+        </div>
+
+        <div class="status" id="statusBox">
+          Ready.
+        </div>
+
+      </div>
+
+      <div class="right">
+
+        <h2>AI Output</h2>
+
+        <div class="output empty" id="output">
 No report generated yet.
 
-The report will include:
-• portfolio summary
+The report may include:
+
+• overseas investments identified
 • likely FIF investments
 • likely exempt investments
-• missing data
+• Australian exemption issues
+• dividends & withholding tax
 • reconciliation issues
-• FDR / CV calculation guidance
-• accountant review notes
-          </div>
+• missing information
+• draft accountant review notes
         </div>
+
       </div>
-    </section>
-  </main>
 
-  <footer>
-    FIA — Foreign Investment Assistant · Draft AI workpaper tool
-  </footer>
+    </div>
 
-  <script>
-    const BACKEND_ENDPOINT = "/api/analyse";
+  </section>
 
-    const SYSTEM_PROMPT = `
-You are FIA, a Foreign Investment Assistant for New Zealand overseas investment tax workpapers.
+</main>
 
-You are not giving final tax advice. You are preparing a draft accountant-review workpaper.
+<footer>
+  FIA — Foreign Investment Assistant
+</footer>
 
-Analyse the uploaded broker or portfolio data and produce a professional report.
+<script>
+
+const SYSTEM_PROMPT = `
+You are FIA (Foreign Investment Assistant).
+
+You are an expert New Zealand overseas investment and FIF assistant.
+
+Analyse the uploaded investment data and produce a professional accountant-style report.
 
 Output sections:
-1. Executive summary
-2. Files/data reviewed
-3. Investments identified
-4. Likely FIF investments
-5. Likely exempt or non-FIF investments
-6. Australian exemption issues
-7. Dividends, distributions and foreign withholding tax
-8. Reconciliation checks
-9. Missing information / client questions
-10. Draft FIF calculation approach
-11. Accountant review notes
-12. Clear disclaimer
 
-Important rules:
-- Be conservative.
-- Do not invent numbers.
-- If information is missing, say exactly what is missing.
-- Separate "identified facts" from "assumptions".
-- Flag anything uncertain for manual review.
-- Keep the tone professional, concise and Big 4 style.
+1. Executive Summary
+2. Investments Identified
+3. Likely FIF Investments
+4. Likely Exempt Investments
+5. Australian Exemption Issues
+6. Dividends and Foreign Tax
+7. Reconciliation Issues
+8. Missing Information
+9. Draft FIF Calculation Notes
+10. Accountant Review Notes
+11. Disclaimer
+
+Rules:
+- do not invent numbers
+- clearly state assumptions
+- clearly separate identified facts from assumptions
+- flag anything uncertain for manual review
+- professional concise tone
 `;
 
-    const fileInput = document.getElementById("fileInput");
-    const fileList = document.getElementById("fileList");
-    const extractedText = document.getElementById("extractedText");
-    const output = document.getElementById("output");
-    const statusBox = document.getElementById("statusBox");
-    const uploadBox = document.getElementById("uploadBox");
-    const fileCount = document.getElementById("fileCount");
-    const charCount = document.getElementById("charCount");
-    const analyseButton = document.getElementById("analyseButton");
+const fileInput = document.getElementById('fileInput');
+const fileList = document.getElementById('fileList');
+const extractedText = document.getElementById('extractedText');
+const output = document.getElementById('output');
+const statusBox = document.getElementById('statusBox');
 
-    let uploadedFiles = [];
+const fileCount = document.getElementById('fileCount');
+const charCount = document.getElementById('charCount');
 
-    fileInput.addEventListener("change", async (event) => {
-      await handleFiles(Array.from(event.target.files || []));
-    });
+let uploadedFiles = [];
 
-    uploadBox.addEventListener("dragover", (event) => {
-      event.preventDefault();
-      uploadBox.classList.add("dragover");
-    });
+fileInput.addEventListener('change', async (event) => {
 
-    uploadBox.addEventListener("dragleave", () => {
-      uploadBox.classList.remove("dragover");
-    });
+  const files = Array.from(event.target.files);
 
-    uploadBox.addEventListener("drop", async (event) => {
-      event.preventDefault();
-      uploadBox.classList.remove("dragover");
-      await handleFiles(Array.from(event.dataTransfer.files || []));
-    });
+  if(!files.length) return;
 
-    extractedText.addEventListener("input", updateStats);
+  uploadedFiles = files;
 
-    async function handleFiles(files) {
-      if (!files.length) return;
+  fileList.innerHTML = '';
 
-      setStatus("Reading files...");
+  let combinedText = '';
 
-      uploadedFiles = files;
-      fileList.innerHTML = "";
-      let combinedText = "";
+  for(const file of files){
 
-      for (const file of files) {
-        const fileItem = document.createElement("div");
-        fileItem.className = "file-item";
-        fileItem.innerHTML = `
-          <div class="file-name">${escapeHtml(file.name)}</div>
-          <div class="file-meta">${formatBytes(file.size)} · ${escapeHtml(file.type || "unknown type")}</div>
-        `;
-        fileList.appendChild(fileItem);
+    const item = document.createElement('div');
 
-        let text = "";
+    item.className = 'file-item';
 
-        try {
-          if (file.type === "application/pdf" || file.name.toLowerCase().endsWith(".pdf")) {
-            text = `[PDF uploaded: ${file.name}. Browser-side PDF parsing is not enabled in this static demo. Send the raw file to backend for extraction, or upload a CSV/TXT export.]`;
-          } else if (file.name.toLowerCase().endsWith(".xlsx")) {
-            text = `[XLSX uploaded: ${file.name}. Browser-side spreadsheet parsing is not enabled in this static demo. Send the raw file to backend for extraction, or export as CSV.]`;
-          } else {
-            text = await file.text();
-          }
-        } catch (error) {
-          text = `[Could not read ${file.name}: ${error.message}]`;
-        }
+    item.innerHTML = `
+      <div class="file-name">${escapeHtml(file.name)}</div>
+      <div class="file-meta">${formatBytes(file.size)}</div>
+    `;
 
-        combinedText += `\n\n--- FILE: ${file.name} ---\n${text}`;
+    fileList.appendChild(item);
+
+    try{
+
+      const text = await file.text();
+
+      combinedText += `
+
+--- FILE: ${file.name} ---
+
+${text}
+`;
+
+    }catch(err){
+
+      combinedText += `
+
+--- FILE ERROR: ${file.name} ---
+
+Could not read file.
+`;
+
+    }
+
+  }
+
+  extractedText.value = combinedText.trim();
+
+  updateStats();
+
+  setStatus('Files loaded.');
+
+});
+
+async function analyseFiles(){
+
+  const apiKey = "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";
+
+  const content =
+    extractedText.value.trim();
+
+  if(!apiKey){
+
+    alert('Please enter OpenAI API key.');
+
+    return;
+  }
+
+  if(!content){
+
+    alert('Please upload files first.');
+
+    return;
+  }
+
+  output.classList.remove('empty');
+
+  output.textContent = '';
+
+  setStatus('FIA is analysing files...');
+
+  try{
+
+    const response = await fetch(
+      'https://api.openai.com/v1/chat/completions',
+      {
+
+        method:'POST',
+
+        headers:{
+          'Content-Type':'application/json',
+          'Authorization':'Bearer ' + apiKey
+        },
+
+        body:JSON.stringify({
+
+          model:'gpt-5',
+
+          messages:[
+            {
+              role:'system',
+              content:SYSTEM_PROMPT
+            },
+            {
+              role:'user',
+              content:content
+            }
+          ],
+
+          temperature:0.2
+
+        })
+
       }
+    );
 
-      extractedText.value = combinedText.trim();
-      updateStats();
-      setStatus("Files loaded. Ready to generate report.");
-    }
+    const data = await response.json();
 
-    async function analyseFiles() {
-      const content = extractedText.value.trim();
+    console.log(data);
 
-      if (!content) {
-        alert("Please upload files or paste broker data first.");
-        return;
-      }
+    const text =
+      data.choices?.[0]?.message?.content ||
+      JSON.stringify(data,null,2);
 
-      analyseButton.disabled = true;
-      output.classList.remove("empty");
-      output.textContent = "";
-      setStatus("FIA is analysing the uploaded data...");
+    output.textContent = text;
 
-      try {
-        const response = await fetch(BACKEND_ENDPOINT, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            model: "gpt-5.5",
-            reasoning: { effort: "medium" },
-            input: [
-              {
-                role: "system",
-                content: SYSTEM_PROMPT
-              },
-              {
-                role: "user",
-                content: "Analyse this uploaded investment data and produce the FIA report:\n\n" + content
-              }
-            ]
-          })
-        });
+    setStatus('Report generated.');
 
-        const data = await response.json();
+  }catch(err){
 
-        if (!response.ok) {
-          throw new Error(data.error || data.message || "Backend request failed.");
-        }
+    output.textContent =
+      'Error:\n\n' + err.message;
 
-        const text =
-          data.output_text ||
-          data.report ||
-          data.choices?.[0]?.message?.content ||
-          data.output?.[0]?.content?.[0]?.text ||
-          JSON.stringify(data, null, 2);
+    setStatus('Error generating report.');
 
-        output.textContent = text;
-        setStatus("Report generated.");
+  }
 
-      } catch (error) {
-        output.textContent =
-          "Error generating report:\n\n" +
-          error.message +
-          "\n\nCheck that your backend endpoint exists at " +
-          BACKEND_ENDPOINT +
-          " and that your OpenAI API key is stored server-side.";
-        setStatus("Error. Backend/API connection failed.");
-      } finally {
-        analyseButton.disabled = false;
-      }
-    }
+}
 
-    function clearAll() {
-      uploadedFiles = [];
-      fileInput.value = "";
-      extractedText.value = "";
-      output.classList.add("empty");
-      output.textContent = "No report generated yet.";
-      fileList.innerHTML = `
-        <div class="file-item">
-          <div class="file-name">No files uploaded yet</div>
-          <div class="file-meta">Choose one or more files to begin.</div>
-        </div>
-      `;
-      updateStats();
-      setStatus("Cleared.");
-    }
+function clearAll(){
 
-    function updateStats() {
-      fileCount.textContent = uploadedFiles.length;
-      charCount.textContent = extractedText.value.length.toLocaleString();
-    }
+  uploadedFiles = [];
 
-    function setStatus(message) {
-      statusBox.textContent = message;
-      statusBox.classList.add("show");
-    }
+  extractedText.value = '';
 
-    function formatBytes(bytes) {
-      if (!bytes) return "0 B";
-      const units = ["B", "KB", "MB", "GB"];
-      const index = Math.floor(Math.log(bytes) / Math.log(1024));
-      return `${(bytes / Math.pow(1024, index)).toFixed(1)} ${units[index]}`;
-    }
+  output.textContent =
+    'No report generated yet.';
 
-    function escapeHtml(value) {
-      return String(value)
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
-    }
-  </script>
+  output.classList.add('empty');
+
+  fileList.innerHTML = `
+    <div class="file-item">
+      <div class="file-name">
+        No files uploaded yet
+      </div>
+
+      <div class="file-meta">
+        Choose files to begin.
+      </div>
+    </div>
+  `;
+
+  updateStats();
+
+  setStatus('Cleared.');
+
+}
+
+function updateStats(){
+
+  fileCount.textContent =
+    uploadedFiles.length;
+
+  charCount.textContent =
+    extractedText.value.length.toLocaleString();
+
+}
+
+function setStatus(message){
+
+  statusBox.textContent = message;
+
+  statusBox.classList.add('show');
+
+}
+
+function formatBytes(bytes){
+
+  if(!bytes) return '0 B';
+
+  const units = ['B','KB','MB','GB'];
+
+  const index =
+    Math.floor(Math.log(bytes)/Math.log(1024));
+
+  return (
+    (bytes / Math.pow(1024,index)).toFixed(1)
+    + ' '
+    + units[index]
+  );
+
+}
+
+function escapeHtml(value){
+
+  return String(value)
+    .replaceAll('&','&amp;')
+    .replaceAll('<','&lt;')
+    .replaceAll('>','&gt;')
+    .replaceAll('"','&quot;')
+    .replaceAll("'","&#039;");
+
+}
+
+</script>
+
 </body>
 </html>
