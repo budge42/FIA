@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>FIA — Foreign Investment Assistant</title>
 
   <style>
@@ -10,7 +10,6 @@
       --navy:#082b63;
       --navyDark:#041936;
       --blue:#0f5bd7;
-      --pale:#f4f7fb;
       --line:#d9e2ef;
       --text:#0f1728;
       --muted:#66758a;
@@ -89,6 +88,7 @@
       cursor:pointer;
       transition:0.2s;
       background:white;
+      display:block;
     }
 
     .upload-box:hover{
@@ -229,6 +229,7 @@
       font-size:15px;
       font-weight:800;
       transition:0.2s;
+      font-family:inherit;
     }
 
     .primary-btn{
@@ -291,15 +292,15 @@
     }
 
     .output{
-  min-height:650px;
-  height:auto;
-  max-height:none;
-  border:1px solid var(--line);
-  border-radius:22px;
-  background:white;
-  padding:0;
-  overflow:visible;
-}
+      min-height:650px;
+      height:auto;
+      max-height:none;
+      border:1px solid var(--line);
+      border-radius:22px;
+      background:white;
+      padding:0;
+      overflow:visible;
+    }
 
     .empty{
       color:var(--muted);
@@ -339,22 +340,16 @@
       font-size:17px;
     }
 
-    .report p{
-      margin:8px 0;
-    }
+    .report p{ margin:8px 0; }
 
     .report ul{
       margin:8px 0 14px 20px;
       padding:0;
     }
 
-    .report li{
-      margin:6px 0;
-    }
+    .report li{ margin:6px 0; }
 
-    .report strong{
-      color:#061a3f;
-    }
+    .report strong{ color:#061a3f; }
 
     .report hr{
       border:none;
@@ -362,14 +357,20 @@
       margin:20px 0;
     }
 
+    .table-wrap{
+      width:100%;
+      overflow-x:auto;
+      margin:16px 0;
+      border:1px solid var(--line);
+      border-radius:12px;
+    }
+
     .report table{
       width:100%;
+      min-width:620px;
       border-collapse:collapse;
-      margin:16px 0;
       font-size:13px;
-      overflow:hidden;
-      border-radius:12px;
-      border:1px solid var(--line);
+      margin:0;
     }
 
     .report th{
@@ -386,9 +387,7 @@
       vertical-align:top;
     }
 
-    .report tr:last-child td{
-      border-bottom:none;
-    }
+    .report tr:last-child td{ border-bottom:none; }
 
     footer{
       text-align:center;
@@ -400,10 +399,12 @@
 
     @media(max-width:900px){
       .content{ grid-template-columns:1fr; }
+
       .left{
         border-right:none;
         border-bottom:1px solid var(--line);
       }
+
       .metric-grid{ grid-template-columns:1fr; }
     }
   </style>
@@ -413,9 +414,9 @@
 
 <header>
   <div class="badge">Foreign Investment Assistant</div>
-  <h1><br>FIA</h1>
+  <h1>FIA</h1>
   <div class="subtitle">
-    Fia analyses overseas investment data, classifies likely FIF exposure,
+    FIA analyses overseas investment data, classifies likely FIF exposure,
     identifies reconciliation issues and generates accountant-ready draft workpapers.
   </div>
 </header>
@@ -431,13 +432,9 @@
           and create a draft report.
         </div>
 
-        <button
-          type="button"
-          class="primary-btn"
-          onclick="document.getElementById('fileInput').click()"
-        >
+        <div class="primary-btn" style="display:inline-block;">
           Choose Files
-        </button>
+        </div>
 
         <input
           type="file"
@@ -460,7 +457,7 @@
     <div class="content">
       <div class="left">
         <h2>Source Files</h2>
-        <div class="small"></div>
+        <div class="small">Upload broker files or paste raw investment data below.</div>
 
         <div class="file-list" id="fileList">
           <div class="file-item">
@@ -493,18 +490,11 @@
         </div>
 
         <div class="actions">
-          <button
-            class="primary-btn"
-            onclick="analyseFiles()"
-            id="analyseButton"
-          >
+          <button class="primary-btn" onclick="analyseFiles()" id="analyseButton">
             Draft Report
           </button>
 
-          <button
-            class="secondary-btn"
-            onclick="clearAll()"
-          >
+          <button class="secondary-btn" onclick="clearAll()">
             Clear
           </button>
         </div>
@@ -515,8 +505,7 @@
       <div class="right">
         <h2>Output</h2>
         <div class="output" id="output">
-          <div class="empty">
-No report created yet.
+          <div class="empty">No report created yet.
 
 The report may include:
 
@@ -527,8 +516,7 @@ The report may include:
 • dividends & withholding tax
 • reconciliation issues
 • missing information
-• draft accountant review notes
-          </div>
+• draft accountant review notes</div>
         </div>
       </div>
     </div>
@@ -541,6 +529,8 @@ The report may include:
 
 <script>
   const API_ENDPOINT = "/api/analyse";
+  const MAX_FRONTEND_CHARS = 350000;
+  const MAX_CSV_ROWS = 800;
 
   const fileInput = document.getElementById("fileInput");
   const fileList = document.getElementById("fileList");
@@ -572,11 +562,37 @@ The report may include:
       fileList.appendChild(item);
 
       try {
-        const text = await file.text();
-        combinedText += `\n\n--- FILE: ${file.name} ---\n\n${text}`;
+        let text = await file.text();
+        text = text.replace(/\u0000/g, "").replace(/\r\n/g, "\n").trim();
+
+        const isCsv = file.name.toLowerCase().endsWith(".csv");
+
+        if (isCsv) {
+          const lines = text.split("\n").filter(line => line.trim());
+          const header = lines[0] || "";
+          const rows = lines.slice(1, MAX_CSV_ROWS + 1);
+
+          combinedText += `\n\n--- FILE: ${file.name} ---\n`;
+          combinedText += `File type: CSV\n`;
+          combinedText += `Original rows: ${Math.max(lines.length - 1, 0)}\n`;
+          combinedText += `Rows included for MVP analysis: ${rows.length}\n\n`;
+          combinedText += [header, ...rows].join("\n");
+
+          if (lines.length - 1 > MAX_CSV_ROWS) {
+            combinedText += `\n\n--- NOTE: CSV was trimmed to the first ${MAX_CSV_ROWS} rows for MVP analysis. Full-file processing should later use server-side CSV parsing and summarisation. ---`;
+          }
+        } else {
+          combinedText += `\n\n--- FILE: ${file.name} ---\n\n${text}`;
+        }
       } catch (err) {
         combinedText += `\n\n--- FILE ERROR: ${file.name} ---\n\nCould not read file.`;
       }
+    }
+
+    if (combinedText.length > MAX_FRONTEND_CHARS) {
+      combinedText =
+        combinedText.slice(0, MAX_FRONTEND_CHARS) +
+        `\n\n--- NOTE: Input was trimmed in the browser to ${MAX_FRONTEND_CHARS.toLocaleString()} characters. ---`;
     }
 
     extractedText.value = combinedText.trim();
@@ -594,6 +610,11 @@ The report may include:
       return;
     }
 
+    if (content.length > MAX_FRONTEND_CHARS + 1000) {
+      alert("This input is too large. Please reduce the CSV size or remove unnecessary columns.");
+      return;
+    }
+
     analyseButton.disabled = true;
     output.innerHTML = `<div class="empty">FIA is analysing files...</div>`;
     setStatus("FIA is analysing files...");
@@ -607,7 +628,14 @@ The report may include:
         body: JSON.stringify({ content })
       });
 
-      const data = await response.json();
+      const responseText = await response.text();
+      let data;
+
+      try {
+        data = JSON.parse(responseText);
+      } catch {
+        throw new Error("Server returned a non-JSON response. Check Vercel function logs.");
+      }
 
       if (!response.ok) {
         throw new Error(data.error || JSON.stringify(data, null, 2));
@@ -616,8 +644,6 @@ The report may include:
       const reportText =
         data.output_text ||
         data.report ||
-        data.output?.[0]?.content?.find(item => item.type === "output_text")?.text ||
-        data.output?.[0]?.content?.[0]?.text ||
         JSON.stringify(data, null, 2);
 
       output.innerHTML = `<div class="report">${markdownToHtml(reportText)}</div>`;
@@ -625,8 +651,7 @@ The report may include:
 
     } catch (err) {
       output.innerHTML = `
-        <div class="empty">
-Error:
+        <div class="empty">Error:
 
 ${escapeHtml(err.message)}
 
@@ -635,10 +660,9 @@ Checks:
 2. Make sure Vercel redeployed after the file was added.
 3. Make sure OPENAI_API_KEY exists in Vercel Environment Variables.
 4. Make sure you are opening the Vercel URL, not only GitHub Pages.
-        </div>
+5. If using CSV, try a smaller export or fewer rows.</div>
       `;
       setStatus("Error generating report.");
-
     } finally {
       analyseButton.disabled = false;
     }
@@ -650,8 +674,7 @@ Checks:
     extractedText.value = "";
 
     output.innerHTML = `
-      <div class="empty">
-No report created yet.
+      <div class="empty">No report created yet.
 
 The report may include:
 
@@ -662,8 +685,7 @@ The report may include:
 • dividends & withholding tax
 • reconciliation issues
 • missing information
-• draft accountant review notes
-      </div>
+• draft accountant review notes</div>
     `;
 
     fileList.innerHTML = `
@@ -690,7 +712,10 @@ The report may include:
   function formatBytes(bytes) {
     if (!bytes) return "0 B";
     const units = ["B", "KB", "MB", "GB"];
-    const index = Math.floor(Math.log(bytes) / Math.log(1024));
+    const index = Math.min(
+      Math.floor(Math.log(bytes) / Math.log(1024)),
+      units.length - 1
+    );
     return (bytes / Math.pow(1024, index)).toFixed(1) + " " + units[index];
   }
 
@@ -706,38 +731,35 @@ The report may include:
   function markdownToHtml(markdown) {
     let html = escapeHtml(markdown);
 
-    html = html.replace(/\|(.+)\|/g, function(row) {
-      return row;
-    });
-
+    html = convertMarkdownTables(html);
     html = html.replace(/^### (.*)$/gm, "<h3>$1</h3>");
     html = html.replace(/^## (.*)$/gm, "<h2>$1</h2>");
     html = html.replace(/^# (.*)$/gm, "<h1>$1</h1>");
-
     html = html.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
     html = html.replace(/^---$/gm, "<hr>");
 
-    html = convertMarkdownTables(html);
-
     html = html.replace(/^\- (.*)$/gm, "<li>$1</li>");
-    html = html.replace(/(<li>.*<\/li>)/gs, function(match) {
-      return "<ul>" + match + "</ul>";
-    });
+    html = html.replace(/((?:<li>.*<\/li>\n?)+)/g, "<ul>$1</ul>");
 
     html = html
       .split(/\n{2,}/)
       .map(block => {
+        const trimmed = block.trim();
+
+        if (!trimmed) return "";
+
         if (
-          block.startsWith("<h1") ||
-          block.startsWith("<h2") ||
-          block.startsWith("<h3") ||
-          block.startsWith("<ul") ||
-          block.startsWith("<hr") ||
-          block.startsWith("<table")
+          trimmed.startsWith("<h1") ||
+          trimmed.startsWith("<h2") ||
+          trimmed.startsWith("<h3") ||
+          trimmed.startsWith("<ul") ||
+          trimmed.startsWith("<hr") ||
+          trimmed.startsWith("<div class=\"table-wrap\"")
         ) {
-          return block;
+          return trimmed;
         }
-        return "<p>" + block.replace(/\n/g, "<br>") + "</p>";
+
+        return "<p>" + trimmed.replace(/\n/g, "<br>") + "</p>";
       })
       .join("");
 
@@ -758,22 +780,25 @@ The report may include:
         i += 2;
 
         const rows = [];
+
         while (i < lines.length && lines[i].includes("|")) {
           rows.push(lines[i].split("|").map(x => x.trim()).filter(Boolean));
           i++;
         }
 
-        let table = "<table><thead><tr>";
+        let table = '<div class="table-wrap"><table><thead><tr>';
         headers.forEach(h => table += `<th>${h}</th>`);
         table += "</tr></thead><tbody>";
 
         rows.forEach(row => {
           table += "<tr>";
-          row.forEach(cell => table += `<td>${cell}</td>`);
+          headers.forEach((_, index) => {
+            table += `<td>${row[index] || ""}</td>`;
+          });
           table += "</tr>";
         });
 
-        table += "</tbody></table>";
+        table += "</tbody></table></div>";
         result.push(table);
       } else {
         result.push(lines[i]);
