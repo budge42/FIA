@@ -129,6 +129,7 @@
     .content{
       display:grid;
       grid-template-columns:0.9fr 1.1fr;
+      align-items:start;
     }
 
     .left{
@@ -290,13 +291,15 @@
     }
 
     .output{
-      min-height:650px;
-      border:1px solid var(--line);
-      border-radius:22px;
-      background:white;
-      padding:0;
-      overflow:auto;
-    }
+  min-height:650px;
+  height:auto;
+  max-height:none;
+  border:1px solid var(--line);
+  border-radius:22px;
+  background:white;
+  padding:0;
+  overflow:visible;
+}
 
     .empty{
       color:var(--muted);
