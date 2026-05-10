@@ -381,11 +381,11 @@
 <body>
 
 <header>
-  <div class="badge">FIA · Foreign Investment Assistant</div>
-  <h1>Upload files.<br>Generate FIF reports.</h1>
+  <div class="badge">Foreign Investment Assistant</div>
+  <h1><br>FIA</h1>
   <div class="subtitle">
-    FIA analyses overseas investment data, classifies likely FIF exposure,
-    identifies reconciliation issues and generates accountant-ready draft workpapers using AI.
+    Fia analyses overseas investment data, classifies likely FIF exposure,
+    identifies reconciliation issues and generates accountant-ready draft workpapers.
   </div>
 </header>
 
@@ -397,7 +397,7 @@
         <div class="upload-title">Upload Broker Files</div>
         <div class="upload-subtitle">
           Upload CSV, TXT, JSON or broker exports. FIA will extract the data
-          and generate a professional AI draft report.
+          and create a draft report.
         </div>
 
         <button
@@ -430,13 +430,13 @@
       <div class="left">
         <h2>Source Files</h2>
         <div class="small">
-          Upload files or paste broker text below. Your OpenAI API key is stored securely in Vercel.
+          
         </div>
 
         <div class="file-list" id="fileList">
           <div class="file-item">
             <div class="file-name">No files uploaded yet</div>
-            <div class="file-meta">Choose files or paste text to begin.</div>
+            <div class="file-meta">Choose files or input text to begin.</div>
           </div>
         </div>
 
@@ -459,7 +459,7 @@
           <h2>Extracted Text</h2>
           <textarea
             id="extractedText"
-            placeholder="Paste broker statement text here, or upload CSV/TXT files above..."
+            placeholder="Input text here, or upload CSV/TXT files above..."
           ></textarea>
         </div>
 
@@ -469,7 +469,7 @@
             onclick="analyseFiles()"
             id="analyseButton"
           >
-            Generate FIA Report
+            Draft Report
           </button>
 
           <button
@@ -484,10 +484,10 @@
       </div>
 
       <div class="right">
-        <h2>AI Output</h2>
+        <h2>Output</h2>
         <div class="output" id="output">
           <div class="empty">
-No report generated yet.
+No report created yet.
 
 The report may include:
 
@@ -561,7 +561,7 @@ The report may include:
     const content = extractedText.value.trim();
 
     if (!content) {
-      alert("Please paste broker data or upload files first.");
+      alert("Please input data or upload files first.");
       return;
     }
 
@@ -592,7 +592,7 @@ The report may include:
         JSON.stringify(data, null, 2);
 
       output.innerHTML = `<div class="report">${markdownToHtml(reportText)}</div>`;
-      setStatus("Report generated.");
+      setStatus("Report created.");
 
     } catch (err) {
       output.innerHTML = `
@@ -622,7 +622,7 @@ Checks:
 
     output.innerHTML = `
       <div class="empty">
-No report generated yet.
+No report creted yet.
 
 The report may include:
 
@@ -640,7 +640,7 @@ The report may include:
     fileList.innerHTML = `
       <div class="file-item">
         <div class="file-name">No files uploaded yet</div>
-        <div class="file-meta">Choose files or paste text to begin.</div>
+        <div class="file-meta">Choose files or input text to begin.</div>
       </div>
     `;
 
