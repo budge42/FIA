@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FIA — Foreign Investment Assistant</title>
+  <style>
+    :root {
+      --bg: #05070a;
+      --card: #10151d;
+      --card2: #151b25;
+      --text: #f4f7fb;
+      --muted: #9aa7b5;
+      --line: #253142;
+      --green: #4ade80;
+      --blue: #60a5fa;
+      --gold: #fbbf24;
+      --red: #fb7185;
+      --purple: #a78bfa;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at top, #132033 0%, transparent 35%),
+        linear-gradient(180deg, #05070a, #080b10);
+      color: var(--text);
+    }
+
+    header {
+      padding: 64px 24px 36px;
+      text-align: center;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 8px 14px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--green);
+      background: rgba(74, 222, 128, 0.08);
+      font-size: 14px;
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      font-size: clamp(42px, 8vw, 86px);
+      margin: 0;
+      letter-spacing: -0.06em;
+    }
+
+    .subtitle {
+      max-width: 760px;
+      margin: 20px auto 0;
+      color: var(--muted);
+      font-size: 20px;
+      line-height: 1.5;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 42px 20px 80px;
+    }
+
+    .section-title {
+      font-size: 28px;
+      margin: 54px 0 18px;
+      letter-spacing: -0.03em;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 18px;
+    }
+
+    .card {
+      background: linear-gradient(180deg, var(--card), var(--card2));
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 22px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+    }
+
+    .card h3 {
+      margin: 0 0 10px;
+      font-size: 19px;
+    }
+
+    .card p, .card li {
+      color: var(--muted);
+      line-height: 1.55;
+      font-size: 15px;
+    }
+
+    ul {
+      padding-left: 18px;
+      margin-bottom: 0;
+    }
+
+    .flow {
+      display: grid;
+      gap: 14px;
+    }
+
+    .step {
+      display: grid;
+      grid-template-columns: 42px 1fr;
+      gap: 14px;
+      align-items: start;
+      background: rgba(255,255,255,0.035);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 18px;
+    }
+
+    .num {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      background: rgba(96,165,250,0.15);
+      color: var(--blue);
+      border: 1px solid rgba(96,165,250,0.35);
+    }
+
+    .tag {
+      display: inline-block;
+      margin: 4px 6px 4px 0;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.06);
+      color: var(--muted);
+      font-size: 13px;
+      border: 1px solid var(--line);
+    }
+
+    .highlight {
+      border-color: rgba(74,222,128,0.35);
+      background: linear-gradient(180deg, rgba(74,222,128,0.08), rgba(255,255,255,0.03));
+    }
+
+    .warning {
+      border-color: rgba(251,191,36,0.35);
+      background: linear-gradient(180deg, rgba(251,191,36,0.08), rgba(255,255,255,0.03));
+    }
+
+    .danger {
+      border-color: rgba(251,113,133,0.35);
+      background: linear-gradient(180deg, rgba(251,113,133,0.08), rgba(255,255,255,0.03));
+    }
+
+    footer {
+      text-align: center;
+      color: var(--muted);
+      border-top: 1px solid var(--line);
+      padding: 32px 20px;
+    }
+
+    code {
+      background: rgba(255,255,255,0.08);
+      padding: 2px 6px;
+      border-radius: 6px;
+      color: #dbeafe;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="badge">FIA — Foreign Investment Assistant</div>
+    <h1>Upload broker files.<br />Generate FIF workpapers.</h1>
+    <p class="subtitle">
+      FIA helps accountants and investors analyse overseas investment files, classify FIF exposure,
+      reconcile transactions, calculate income, and produce a review-ready tax report.
+    </p>
+  </header>
+
+  <main>
+    <h2 class="section-title">What FIA Does</h2>
+    <div class="grid">
+      <div class="card highlight">
+        <h3>1. File Upload</h3>
+        <p>Upload CSVs, PDFs, broker statements, dividend reports, transaction exports and prior-year workpapers.</p>
+      </div>
+      <div class="card">
+        <h3>2. Data Extraction</h3>
+        <p>Extract holdings, buys, sells, dividends, fees, FX rates, withholding tax and closing balances.</p>
+      </div>
+      <div class="card">
+        <h3>3. Asset Classification</h3>
+        <p>Classify each investment as FIF, exempt, PIE, crypto, foreign pension, Australian exemption or manual review.</p>
+      </div>
+      <div class="card">
+        <h3>4. Reconciliation</h3>
+        <p>Check opening holdings + transactions against closing holdings and flag missing or inconsistent data.</p>
+      </div>
+      <div class="card">
+        <h3>5. FIF Calculation</h3>
+        <p>Calculate FDR, CV, de minimis threshold, foreign tax credits and estimated tax payable.</p>
+      </div>
+      <div class="card highlight">
+        <h3>6. Report Generation</h3>
+        <p>Produce a clean accountant-ready report with assumptions, exceptions, calculation tables and sign-off notes.</p>
+      </div>
+    </div>
+
+    <h2 class="section-title">Workflow Map</h2>
+    <div class="flow">
+      <div class="step">
+        <div class="num">1</div>
+        <div>
+          <h3>Upload Source Files</h3>
+          <p>
+            User uploads broker exports from Hatch, Sharesies, Interactive Brokers, Tiger Brokers,
+            Stake or custodian platforms.
+          </p>
+          <span class="tag">CSV</span>
+          <span class="tag">PDF</span>
+          <span class="tag">XLSX</span>
+          <span class="tag">Statements</span>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="num">2</div>
+        <div>
+          <h3>Normalize Broker Data</h3>
+          <p>
+            FIA converts different broker formats into one clean transaction schema.
+          </p>
+          <span class="tag">Buys</span>
+          <span class="tag">Sells</span>
+          <span class="tag">Dividends</span>
+          <span class="tag">Fees</span>
+          <span class="tag">FX</span>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="num">3</div>
+        <div>
+          <h3>Classify Investments</h3>
+          <p>
+            The system determines whether each asset is FIF-applicable, exempt, uncertain or outside FIF rules.
+          </p>
+          <span class="tag">US shares</span>
+          <span class="tag">ETFs</span>
+          <span class="tag">ASX shares</span>
+          <span class="tag">PIE funds</span>
+          <span class="tag">Crypto</span>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="num">4</div>
+        <div>
+          <h3>Run Reconciliation</h3>
+          <p>
+            FIA checks whether opening holdings plus purchases minus sales matches the closing portfolio.
+          </p>
+          <span class="tag">Opening balance</span>
+          <span class="tag">Closing balance</span>
+          <span class="tag">Missing trades</span>
+          <span class="tag">Corporate actions</span>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="num">5</div>
+        <div>
+          <h3>Calculate FIF Income</h3>
+          <p>
+            FIA calculates FDR and CV where available, then shows the lower result and explains the calculation.
+          </p>
+          <span class="tag">FDR: 5% opening value</span>
+          <span class="tag">CV: actual movement</span>
+          <span class="tag">Foreign tax credits</span>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="num">6</div>
+        <div>
+          <h3>Flag Exceptions</h3>
+          <p>
+            Anything uncertain is separated for accountant review instead of being hidden inside the final number.
+          </p>
+          <span class="tag">Unclassified ETF</span>
+          <span class="tag">Missing FX</span>
+          <span class="tag">ASX exemption check</span>
+          <span class="tag">Stock split</span>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="num">7</div>
+        <div>
+          <h3>Generate Report</h3>
+          <p>
+            FIA produces a draft workpaper, client summary, assumptions list, exception log and IR3-ready figures.
+          </p>
+          <span class="tag">PDF report</span>
+          <span class="tag">Excel workpaper</span>
+          <span class="tag">Accountant sign-off</span>
+        </div>
+      </div>
+    </div>
+
+    <h2 class="section-title">Required Inputs</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>Client Details</h3>
+        <ul>
+          <li>Tax year</li>
+          <li>Investor type</li>
+          <li>NZ tax residency</li>
+          <li>Marginal tax rate</li>
+          <li>Transitional resident status</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3>Portfolio Data</h3>
+        <ul>
+          <li>Ticker / ISIN</li>
+          <li>Exchange</li>
+          <li>Country</li>
+          <li>Currency</li>
+          <li>Opening and closing units</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3>Transaction Data</h3>
+        <ul>
+          <li>Buy and sell dates</li>
+          <li>Quantity</li>
+          <li>Price</li>
+          <li>Brokerage fees</li>
+          <li>FX rate to NZD</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3>Income Data</h3>
+        <ul>
+          <li>Dividends</li>
+          <li>Distributions</li>
+          <li>Foreign withholding tax</li>
+          <li>Dividend reinvestment</li>
+          <li>Payment currency</li>
+        </ul>
+      </div>
+    </div>
+
+    <h2 class="section-title">Calculation Engine</h2>
+    <div class="grid">
+      <div class="card highlight">
+        <h3>De Minimis Test</h3>
+        <p>
+          Checks whether total FIF investment cost is under the NZ$50,000 threshold for eligible individuals.
+        </p>
+        <p><code>Total FIF cost ≤ NZ$50,000</code></p>
+      </div>
+
+      <div class="card">
+        <h3>FDR Method</h3>
+        <p>
+          Calculates FIF income as 5% of opening market value, plus any quick sale adjustment where required.
+        </p>
+        <p><code>FIF income = 5% × opening value</code></p>
+      </div>
+
+      <div class="card">
+        <h3>CV Method</h3>
+        <p>
+          Calculates actual portfolio movement using closing value, sales, dividends, purchases and opening value.
+        </p>
+        <p><code>CV = closing + sales + dividends - purchases - opening</code></p>
+      </div>
+
+      <div class="card">
+        <h3>Tax Estimate</h3>
+        <p>
+          Applies the user's marginal tax rate and foreign tax credits to estimate tax payable.
+        </p>
+        <p><code>Tax = FIF income × tax rate - credits</code></p>
+      </div>
+    </div>
+
+    <h2 class="section-title">Exception Handling</h2>
+    <div class="grid">
+      <div class="card warning">
+        <h3>Manual Review Items</h3>
+        <ul>
+          <li>Australian ETF exemption uncertainty</li>
+          <li>Stapled securities</li>
+          <li>Foreign pensions</li>
+          <li>Employee share schemes</li>
+          <li>Corporate restructures</li>
+        </ul>
+      </div>
+
+      <div class="card danger">
+        <h3>High-Risk Data Issues</h3>
+        <ul>
+          <li>Missing March statement</li>
+          <li>Opening and closing mismatch</li>
+          <li>Missing FX rate</li>
+          <li>Unmatched dividend reinvestment</li>
+          <li>Unknown security type</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3>Human Sign-Off</h3>
+        <p>
+          FIA should not replace the accountant. It prepares the workpapers, highlights risk,
+          and gives the accountant a clean review pack.
+        </p>
+      </div>
+    </div>
+
+    <h2 class="section-title">MVP Scope</h2>
+    <div class="card highlight">
+      <h3>Version 1</h3>
+      <p>
+        Start narrow: NZ individuals, US-listed shares and ETFs, Hatch/Sharesies/IBKR CSV upload,
+        FDR and CV calculations, foreign tax credits, and PDF report export.
+      </p>
+      <p>
+        Avoid pensions, trusts, companies, complex ASX exemptions, RSUs and corporate actions until later.
+      </p>
+    </div>
+
+    <h2 class="section-title">Positioning</h2>
+    <div class="card">
+      <h3>Best Product Message</h3>
+      <p>
+        <strong>FIA turns messy overseas investment files into clean FIF workpapers.</strong>
+      </p>
+      <p>
+        Upload broker files. Reconcile holdings. Classify investments. Calculate FIF income.
+        Generate an accountant-ready report.
+      </p>
+    </div>
+  </main>
+
+  <footer>
+    FIA — Foreign Investment Assistant · Draft product map
+  </footer>
+</body>
+</html>
