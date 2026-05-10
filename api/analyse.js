@@ -72,7 +72,7 @@ Important constraints:
 - If de minimis may apply, calculate apparent cost/opening exposure and explain whether more cost data is needed.
 - Include strategic advice: structure, documentation, data collection, broker process, and future-year process improvements.
 
-Use this exact report structure:
+Use this exact report structure and include sections only if nessacary, respong under 500 words
 
 # FIA Draft Report
 
@@ -106,11 +106,7 @@ List exactly what the client/accountant should request next.
 ## 10. Strategic Recommendations
 Give practical advice a large client would pay for: controls, broker exports, annual process, portfolio structuring, PIE vs direct foreign holdings, ASX treatment review, evidence pack.
 
-## 11. Draft Workpaper Conclusion
-Concise conclusion.
 
-## 12. Disclaimer
-Short accountant-review disclaimer.
 
 Investment data:
 ${content}
@@ -125,7 +121,7 @@ ${content}
       body: JSON.stringify({
         model: "gpt-5.4-mini",
         reasoning: { effort: "medium" },
-        max_output_tokens: 12000,
+        max_output_tokens: 5000,
         text: {
           format: { type: "text" },
           verbosity: "medium"
