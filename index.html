@@ -543,10 +543,14 @@ The report may include:
         throw new Error(data.error || JSON.stringify(data, null, 2));
       }
 
-      output.textContent =
-        data.output_text ||
-        data.report ||
-        JSON.stringify(data, null, 2);
+      const reportText =
+  data.output_text ||
+  data.report ||
+  data.output?.[0]?.content?.find(item => item.type === "output_text")?.text ||
+  data.output?.[0]?.content?.[0]?.text ||
+  JSON.stringify(data, null, 2);
+
+output.textContent = reportText;
 
       setStatus("Report generated.");
 
