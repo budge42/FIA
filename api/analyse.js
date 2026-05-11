@@ -92,7 +92,7 @@ Important constraints:
 - Include strategic advice: structure, documentation, data collection, broker process, and future-year process improvements.
 - If the data is raw CSV, infer columns carefully and explain any limitations.
 - If the file appears incomplete, say exactly what is missing.
-- Keep the report under 500 words unless calculations require slightly more.
+- Produce the full reprot, breif, specific, true and correct.
 
 Input metadata:
 - Original character count: ${meta.originalChars}
@@ -179,9 +179,9 @@ export default async function handler(req, res) {
       body: JSON.stringify({
         model: OPENAI_MODEL,
         reasoning: {
-          effort: "medium",
+          effort: "low",
         },
-        max_output_tokens: 5000,
+        max_output_tokens: 20000,
         text: {
           format: {
             type: "text",
